@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout & Kenyan Delivery | Afyalishe Wellness</title>
+  <meta name="description" content="Secure guest checkout, Kenyan delivery zones calculation, simulated M-Pesa STK push, and WhatsApp order fulfillment.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=League+Spartan:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/3d-motion.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="header-logo" aria-label="Afyalishe Wellness Home">
+        <img src="assets/images/logo.jpg" alt="Afyalishe Wellness Logo">
+      </a>
+      <nav class="nav-desktop" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="where-to-buy.html" class="nav-link">Where to Buy</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn icon-btn-cart btn-open-cart" aria-label="View Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><span class="cart-count-badge" style="display: none;">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <!-- Normal Checkout View vs Order Confirmed View -->
+      <div id="checkout-container">
+        <!-- Confirmed View Placeholder -->
+        <div id="confirmed-view" style="display: none; max-width: 680px; margin: 0 auto; background: #FFFFFF; border-radius: var(--radius-xl); border: 2px solid var(--color-primary); padding: 48px; box-shadow: var(--shadow-deep); text-align: center;">
+          <div style="font-size: 54px; margin-bottom: 16px;">🌿</div>
+          <span class="section-eyebrow">Order Placed Successfully</span>
+          <h1 style="font-size: 32px; margin-bottom: 12px;" id="confirmed-order-number">Order #AFY-78219</h1>
+          <p style="font-size: 16px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 24px;">
+            Thank you for choosing Afyalishe Wellness! Your order has been registered in our Nyeri facility. Our logistics team will call or message you on WhatsApp to confirm delivery scheduling.
+          </p>
+
+          <div style="background: var(--color-bg-cream); border-radius: var(--radius-md); padding: 20px; text-align: left; margin-bottom: 30px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+              <span style="color: var(--color-text-secondary);">Payment Method:</span>
+              <strong id="confirmed-payment-method">M-Pesa STK Push</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+              <span style="color: var(--color-text-secondary);">Delivery Destination:</span>
+              <strong id="confirmed-delivery-dest">Nairobi Metro</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--color-text-secondary);">Status:</span>
+              <strong style="color: var(--color-primary);">Confirmed & Processing</strong>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+            <a href="https://wa.me/254759561657?text=Hello%2C%20I%20just%20placed%20an%20order%20online%20and%20would%20like%20to%20track%20it." target="_blank" class="btn btn-whatsapp">
+              <span>💬 Track on WhatsApp (+254 759 561657)</span>
+            </a>
+            <a href="shop.html" class="btn btn-outline">Continue Shopping</a>
+          </div>
+        </div>
+
+        <!-- Checkout Form Grid -->
+        <div id="checkout-form-view" class="checkout-layout">
+          <!-- Left Column: Shipping & Payment -->
+          <div>
+            <!-- Step 1: Customer Details -->
+            <div class="checkout-card">
+              <h2 style="font-size: 22px; margin-bottom: 6px;">1. Customer & Delivery Destination</h2>
+              <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 20px;">
+                Guest checkout — no password required.
+              </p>
+
+              <div class="form-group">
+                <label class="form-label" for="checkout-name">Full Name *</label>
+                <input type="text" id="checkout-name" class="form-control" required placeholder="e.g. Grace Wambui">
+              </div>
+
+              <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                <div>
+                  <label class="form-label" for="checkout-phone">Safaricom Phone Number *</label>
+                  <input type="tel" id="checkout-phone" class="form-control" required placeholder="0759 561657">
+                </div>
+                <div>
+                  <label class="form-label" for="checkout-email">Email Address</label>
+                  <input type="email" id="checkout-email" class="form-control" placeholder="grace@gmail.com">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="checkout-address">Street / Building / Landmark *</label>
+                <input type="text" id="checkout-address" class="form-control" required placeholder="e.g. Kilimani, Rose Avenue, Apt 4B">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="checkout-town">Town / County *</label>
+                <input type="text" id="checkout-town" class="form-control" required placeholder="e.g. Nairobi / Nyeri / Juja">
+              </div>
+            </div>
+
+            <!-- Step 2: Kenyan Delivery Zones -->
+            <div class="checkout-card">
+              <h2 style="font-size: 22px; margin-bottom: 6px;">2. Select Kenyan Delivery Zone</h2>
+              <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 20px;">
+                Standardized courier and door delivery rates.
+              </p>
+
+              <div class="delivery-options-grid">
+                <div class="delivery-option-item active" data-zone-id="nairobi">
+                  <div>
+                    <strong style="display: block; font-size: 15px;">Nairobi Metro (Doorstep Courier)</strong>
+                    <span style="font-size: 12.5px; color: var(--color-text-secondary);">Same-day or next-day delivery across all Nairobi estates.</span>
+                  </div>
+                  <strong style="color: var(--color-primary); font-size: 16px;">KES 350</strong>
+                </div>
+
+                <div class="delivery-option-item" data-zone-id="nyeri-central">
+                  <div>
+                    <strong style="display: block; font-size: 15px;">Nyeri & Central Kenya (Local Express)</strong>
+                    <span style="font-size: 12.5px; color: var(--color-text-secondary);">Direct dispatch from Nyeri facility within 12-24 hours.</span>
+                  </div>
+                  <strong style="color: var(--color-primary); font-size: 16px;">KES 250</strong>
+                </div>
+
+                <div class="delivery-option-item" data-zone-id="rest-of-kenya">
+                  <div>
+                    <strong style="display: block; font-size: 15px;">Rest of Kenya (Parcel Courier / Matatu Hub)</strong>
+                    <span style="font-size: 12.5px; color: var(--color-text-secondary);">Mombasa, Nakuru, Kisumu, Eldoret, Meru, etc.</span>
+                  </div>
+                  <strong style="color: var(--color-primary); font-size: 16px;">KES 450</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Payment Options -->
+            <div class="checkout-card">
+              <h2 style="font-size: 22px; margin-bottom: 16px;">3. Payment Method</h2>
+
+              <!-- Tabs -->
+              <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-sm btn-outline payment-tab-btn active" data-payment-method="mpesa-stk">
+                  💚 M-Pesa STK Push
+                </button>
+                <button type="button" class="btn btn-sm btn-outline payment-tab-btn" data-payment-method="mpesa-paybill">
+                  📱 M-Pesa Paybill / Till
+                </button>
+                <button type="button" class="btn btn-sm btn-outline payment-tab-btn" data-payment-method="card">
+                  💳 Debit / Credit Card
+                </button>
+              </div>
+
+              <!-- Panel 1: STK Push -->
+              <div class="payment-panel active" id="panel-mpesa-stk">
+                <div class="mpesa-stk-box">
+                  <h4 style="color: #00a859; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <span>📲</span> M-Pesa STK Push Prompt
+                  </h4>
+                  <p style="font-size: 13.5px; color: var(--color-text-charcoal); margin-bottom: 14px;">
+                    Enter your phone number below. We will send an instant M-Pesa payment prompt directly to your phone screen.
+                  </p>
+                  <div class="form-group" style="margin-bottom: 12px;">
+                    <label class="form-label" for="mpesa-phone">M-Pesa Phone Number</label>
+                    <input type="tel" id="mpesa-phone" class="form-control" placeholder="0759 561657">
+                  </div>
+                  <button type="button" class="btn btn-primary-lime btn-full" id="btn-mpesa-pay">
+                    <span>Send M-Pesa Prompt to Phone</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Panel 2: Paybill -->
+              <div class="payment-panel" id="panel-mpesa-paybill" style="display: none;">
+                <div style="background: #fdfaf7; border: 1.5px solid var(--color-terracotta); border-radius: var(--radius-lg); padding: 20px;">
+                  <h4 style="color: var(--color-terracotta); margin-bottom: 8px;">Manual Paybill / Buy Goods</h4>
+                  <p style="font-size: 13.5px; line-height: 1.6; margin-bottom: 12px;">
+                    1. Go to M-Pesa menu &gt; Lipa na M-Pesa<br>
+                    2. Select Buy Goods & Services or Paybill<br>
+                    3. Till / Business Number: <strong>522522</strong><br>
+                    4. Account No: <strong>AFYALISHE</strong><br>
+                    5. Once paid, reply to our WhatsApp confirmation with your M-Pesa SMS.
+                  </p>
+                  <button type="button" class="btn btn-terracotta btn-full" onclick="window.AFYALISHE_CHECKOUT.completeOrder('M-Pesa Paybill')">
+                    Confirm Manual Payment Sent
+                  </button>
+                </div>
+              </div>
+
+              <!-- Panel 3: Card -->
+              <div class="payment-panel" id="panel-card" style="display: none;">
+                <div style="background: #fdfdfd; border: 1.5px solid rgba(88,144,56,0.2); border-radius: var(--radius-lg); padding: 20px;">
+                  <div class="form-group">
+                    <label class="form-label" for="card-number">Card Number</label>
+                    <input type="text" id="card-number" class="form-control" placeholder="4111 2222 3333 4444">
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                      <label class="form-label" for="card-expiry">Expiry</label>
+                      <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="card-cvv">CVV</label>
+                      <input type="password" id="card-cvv" class="form-control" placeholder="123" maxlength="4">
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-deep-green btn-full" id="btn-card-pay">
+                    <span>Pay Securely with Card</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Order Summary & WhatsApp Routing -->
+          <div>
+            <div class="checkout-card" style="position: sticky; top: calc(var(--header-height) + 20px);">
+              <h3 style="font-size: 20px; margin-bottom: 16px;">Order Inquiry Summary</h3>
+              
+              <div id="checkout-cart-items" style="max-height: 280px; overflow-y: auto; margin-bottom: 20px;">
+                <!-- Populated dynamically via checkout.js -->
+              </div>
+
+              <div style="border-top: 1px solid rgba(0,0,0,0.08); padding-top: 16px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14.5px;">
+                  <span>Kenyan Delivery Fee:</span>
+                  <strong id="checkout-delivery-fee" style="color: var(--color-primary);">KES 350</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--color-text-secondary);">
+                  <span>Product Subtotal:</span>
+                  <span>Confirmed Upon Dispatch</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 16px; border-top: 2px solid rgba(88,144,56,0.15); padding-top: 12px;">
+                  <strong style="color: var(--color-text-charcoal);">Total Payable:</strong>
+                  <strong style="color: var(--color-primary);" id="checkout-total-val">KES 350 + Order</strong>
+                </div>
+              </div>
+
+              <!-- Instant WhatsApp alternative -->
+              <div style="background: rgba(37,211,102,0.1); border: 1.5px solid #25D366; border-radius: var(--radius-md); padding: 16px; text-align: center; margin-bottom: 16px;">
+                <strong style="color: #128c7e; display: block; margin-bottom: 6px; font-size: 14px;">Prefer WhatsApp Ordering?</strong>
+                <p style="font-size: 12.5px; color: var(--color-text-charcoal); line-height: 1.4; margin-bottom: 12px;">
+                  Skip forms entirely. Send your delivery location and bag items directly to our sales rep.
+                </p>
+                <button type="button" class="btn btn-whatsapp btn-sm btn-full" id="btn-whatsapp-checkout">
+                  <span>💬 Complete on WhatsApp (+254 759 561657)</span>
+                </button>
+              </div>
+
+              <div style="font-size: 12px; color: var(--color-text-muted); text-align: center;">
+                🔒 256-bit SSL encrypted & GDPR/Kenya DPA Compliant
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- M-Pesa STK Prompt Simulation Modal -->
+  <div class="modal-overlay" id="mpesa-stk-modal" role="dialog" aria-modal="true">
+    <div class="modal-dialog" style="max-width: 440px; text-align: center; padding: 36px;">
+      <div style="font-size: 44px; margin-bottom: 12px;">📱</div>
+      <h3 style="color: #00a859; margin-bottom: 8px;">M-Pesa STK Push Sent</h3>
+      <p style="font-size: 14px; margin-bottom: 20px;">
+        A prompt has been sent to Safaricom number: <strong class="mpesa-target-phone">0759 561657</strong>
+      </p>
+
+      <div style="background: var(--color-bg-cream); border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px; font-size: 13.5px; line-height: 1.6;" class="mpesa-status-step">
+        Please check your mobile handset screen now.
+      </div>
+
+      <div style="font-size: 12px; color: var(--color-text-secondary);">
+        Keep this window open while you enter your secret 4-digit M-Pesa PIN.
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <div class="footer-bottom-container">
+        <div>&copy; 2026 AFYALISHE WELLNESS LTD. Nyeri, Kenya.</div>
+        <div class="payment-badges">
+          <span class="payment-badge mpesa">💚 M-PESA Verified</span>
+          <span class="payment-badge">💳 PCI-DSS Compliant</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/vendor/three.min.js"></script>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/js/motion-config.js"></script>
+  <script src="assets/js/custom-cursor.js"></script>
+  <script src="assets/js/magnetic-btn.js"></script>
+  <script src="assets/js/tilt-card.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/checkout.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('confirmed') === '1') {
+        const formView = document.getElementById('checkout-form-view');
+        const confirmedView = document.getElementById('confirmed-view');
+        if (formView) formView.style.display = 'none';
+        if (confirmedView) {
+          confirmedView.style.display = 'block';
+          const latestOrder = JSON.parse(localStorage.getItem('afyalishe_latest_order') || '{}');
+          if (latestOrder.orderNumber) {
+            document.getElementById('confirmed-order-number').textContent = `Order #${latestOrder.orderNumber}`;
+            document.getElementById('confirmed-payment-method').textContent = latestOrder.paymentMethod || 'M-Pesa';
+            document.getElementById('confirmed-delivery-dest').textContent = latestOrder.deliveryZone || 'Nairobi Metro';
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

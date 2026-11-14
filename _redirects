@@ -1,0 +1,11 @@
+# Cloudflare Pages Clean URL Redirects
+/shop             /shop.html             200
+/about            /about.html            200
+/where-to-buy     /where-to-buy.html     200
+/services         /services.html         200
+/blog             /blog.html             200
+/contact          /contact.html          200
+/checkout         /checkout.html         200
+/product          /product.html          200
+/privacy-terms    /privacy-terms.html    200
+/shipping-returns /privacy-terms.html    200

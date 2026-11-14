@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Afyalishe Wellness | Food as Medicine — Probiotic Drinks, Chia & Herbal Teas</title>
+  
+  <meta name="description" content="AFYALISHE WELLNESS LTD, Kenya. Natural, innovative functional food products promoting vitality and wellbeing. Yacon prebiotics, Chia yoghurt, cold-pressed chia oil, and hibiscus herbal teas free from artificial additives.">
+  <meta name="keywords" content="Afyalishe Wellness, Food as medicine, yacon kefir, chia seeds Kenya, chia oil, hibiscus tea, Nyeri wellness, gut health prebiotics">
+  <meta name="author" content="AFYALISHE WELLNESS LTD">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://afyalishewellness.co.ke/">
+  <meta property="og:title" content="Afyalishe Wellness | Food as Medicine — Premium Kenyan Functional Foods">
+  <meta property="og:description" content="Natural, innovative food products that promote vitality and wellbeing, all free from artificial additives. Crafted in Nyeri, Kenya.">
+  <meta property="og:image" content="assets/images/logo.jpg">
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AFYALISHE WELLNESS LTD",
+    "url": "https://afyalishewellness.co.ke/",
+    "logo": "https://afyalishewellness.co.ke/assets/images/logo.jpg",
+    "slogan": "Food as medicine",
+    "description": "Natural, innovative food products that promote vitality and wellbeing, all free from artificial additives.",
+    "telephone": "+254759561657",
+    "email": "info@afyalishewellness.co.ke",
+    "address": {
+      "@type": "PostalAddress",
+      "postOfficeBoxNumber": "P.O. Box 2579-10100",
+      "addressLocality": "Nyeri",
+      "addressCountry": "KE"
+    }
+  }
+  </script>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=League+Spartan:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/3d-motion.css">
+  <link rel="stylesheet" href="assets/css/pages.css">
+</head>
+<body>
+  <!-- Grain overlay for tactile depth -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- Frosted Glass Sticky Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="header-logo" aria-label="Afyalishe Wellness Home">
+        <img src="assets/images/logo.jpg" alt="Afyalishe Wellness Logo - Food as medicine">
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav-desktop" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="where-to-buy.html" class="nav-link">Where to Buy</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="blog.html" class="nav-link">Blog</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="icon-btn btn-open-search" aria-label="Search products" title="Search products">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <a href="checkout.html" class="icon-btn" aria-label="Account" title="My Account / Orders">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+
+        <button class="icon-btn icon-btn-cart btn-open-cart" aria-label="View cart" title="View order inquiry bag">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-count-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- Mobile Hamburger -->
+        <button class="hamburger-btn" aria-label="Toggle mobile menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Navigation -->
+  <div class="cart-drawer-overlay mobile-nav-overlay"></div>
+  <aside class="cart-drawer mobile-nav-drawer" style="right: -320px; max-width: 300px;">
+    <div class="cart-header">
+      <h3 style="font-size: 18px;">Navigation</h3>
+      <button class="quantity-btn mobile-nav-close" onclick="document.querySelector('.mobile-nav-drawer').classList.remove('open'); document.querySelector('.mobile-nav-overlay').classList.remove('open');">✕</button>
+    </div>
+    <nav style="display: flex; flex-direction: column; padding: 24px; gap: 16px;">
+      <a href="index.html" class="nav-link active" style="font-size: 18px;">Home</a>
+      <a href="shop.html" class="nav-link" style="font-size: 18px;">Shop (11 Products)</a>
+      <a href="about.html" class="nav-link" style="font-size: 18px;">About Us</a>
+      <a href="where-to-buy.html" class="nav-link" style="font-size: 18px;">Where to Buy (Stockists)</a>
+      <a href="services.html" class="nav-link" style="font-size: 18px;">Services</a>
+      <a href="blog.html" class="nav-link" style="font-size: 18px;">Blog</a>
+      <a href="contact.html" class="nav-link" style="font-size: 18px;">Contact</a>
+      <hr style="border: 0; border-top: 1px solid rgba(88,144,56,0.15); margin: 8px 0;">
+      <a href="https://wa.me/254759561657" target="_blank" class="btn btn-whatsapp btn-sm">💬 WhatsApp: 0759 561657</a>
+    </nav>
+  </aside>
+
+  <main id="main-content">
+    <!-- ====================================================================
+         HERO SECTION: 3D THREE.JS SCENE WITH CURSOR TILT & DRIFTING PARTICLES
+         ==================================================================== -->
+    <section class="hero-section" aria-label="Welcome to Afyalishe Wellness">
+      <!-- Ambient Radial Glows -->
+      <div class="hero-glow-1" aria-hidden="true"></div>
+      <div class="hero-glow-2" aria-hidden="true"></div>
+
+      <div class="container hero-container">
+        <!-- Hero Text & Copy -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="heart-dot"></span>
+            <span>AFYALISHE WELLNESS • NYERI, KENYA</span>
+          </div>
+
+          <h1 class="hero-headline">
+            Food as medicine. <br>
+            <span class="highlight-word">Nourish</span> your life from the inside out.
+          </h1>
+
+          <p class="hero-subhead serif-tagline">
+            "Natural, innovative food products that promote vitality and wellbeing."
+          </p>
+
+          <p class="hero-desc">
+            From the fertile soils of Mount Kenya to your family's table: probiotic yacon kefirs, nutrient-rich chia yoghurt, cold-pressed chia oil, and antioxidant roselle hibiscus blends — all 100% free from artificial additives.
+          </p>
+
+          <div class="hero-actions">
+            <a href="shop.html" class="btn btn-primary-lime btn-lg" data-magnetic="true">
+              <span>Shop All 11 Products</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="about.html" class="btn btn-outline btn-lg" data-magnetic="true">
+              <span>Our Story & Sourcing</span>
+            </a>
+          </div>
+
+          <!-- Quick Trust Metrics -->
+          <div style="display: flex; gap: 28px; margin-top: 36px; padding-top: 24px; border-top: 1px solid rgba(88,144,56,0.15);">
+            <div>
+              <strong style="font-family: var(--font-heading); font-size: 22px; color: var(--color-primary); display: block;">100%</strong>
+              <span style="font-size: 12.5px; color: var(--color-text-secondary);">Additive-Free</span>
+            </div>
+            <div>
+              <strong style="font-family: var(--font-heading); font-size: 22px; color: var(--color-primary); display: block;">10+ Towns</strong>
+              <span style="font-size: 12.5px; color: var(--color-text-secondary);">Stockists Across Kenya</span>
+            </div>
+            <div>
+              <strong style="font-family: var(--font-heading); font-size: 22px; color: var(--color-primary); display: block;">Nyeri Farm</strong>
+              <span style="font-size: 12.5px; color: var(--color-text-secondary);">Volcanic Organic Soils</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero 3D Scene Viewport -->
+        <div class="hero-3d-scene-wrap" id="hero-3d-scene-container" title="Interactive 3D Scene: move cursor to tilt, drag to rotate">
+          <!-- Static High Quality Fallback Placeholder (fades once WebGL mounts) -->
+          <div class="hero-fallback-visual">
+            <img src="assets/products/chia-oil.jpg" alt="Afyalishe Chia Oil and functional products">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VALUE PILLARS (Brand Philosophy: Food as Medicine)
+         ==================================================================== -->
+    <section class="section-sm" style="background: #FFFFFF; border-top: 1px solid rgba(88,144,56,0.1); border-bottom: 1px solid rgba(88,144,56,0.1);">
+      <div class="container">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; align-items: center;">
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 28px; background: rgba(122,193,67,0.15); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">🌱</div>
+            <div>
+              <h4 style="margin-bottom: 4px;">Zero Artificial Additives</h4>
+              <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 0;">Pure, whole botanicals, living cultures and real cold-pressed seeds.</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 28px; background: rgba(88,144,56,0.15); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">🫀</div>
+            <div>
+              <h4 style="margin-bottom: 4px;">Supports Heart & Gut</h4>
+              <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 0;">Rich in prebiotic FOS, living synbiotics, and plant-based ALA Omega-3.</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 16px;">
+            <div style="font-size: 28px; background: rgba(190,113,51,0.15); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">🇰🇪</div>
+            <div>
+              <h4 style="margin-bottom: 4px;">Proudly Kenyan Grown</h4>
+              <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 0;">Ethically harvested with local smallholder farmers in Nyeri and Central Kenya.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         FEATURED PRODUCT COLLECTION (3D Tilt Cards with specular glare)
+         ==================================================================== -->
+    <section class="section" aria-label="Featured Nutritional Foods">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Natural Nutrition</span>
+          <h2>Crafted For Your Daily Vitality</h2>
+          <p class="section-subtitle">
+            Explore our bestselling probiotic beverages, cold-pressed seed oils, and restorative herbal teas.
+          </p>
+        </div>
+
+        <!-- 4 Featured Cards Grid -->
+        <div class="grid grid-4 grid-products" id="home-featured-products">
+          <!-- Dynamically populated via main.js with 3D tilt cards -->
+        </div>
+
+        <div style="text-align: center; margin-top: 48px;">
+          <a href="shop.html" class="btn btn-deep-green btn-lg" data-magnetic="true">
+            <span>Explore The Complete 11-Product Catalogue</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SCROLL-DRIVEN 3D SHOWCASE (360° Bottle Rotation)
+         ==================================================================== -->
+    <section class="showcase-scroll-section" aria-label="Product Showcase in 360 Degrees">
+      <div class="container">
+        <div class="showcase-grid">
+          <!-- 360 Rotating Object Viewport -->
+          <div class="showcase-bottle-viewport">
+            <div class="showcase-aura"></div>
+            <div class="showcase-rotating-object">
+              <img src="assets/products/chia-oil.jpg" alt="Afyalishe Chia Oil cold-pressed bottle">
+            </div>
+          </div>
+
+          <!-- Feature Breakdown -->
+          <div class="showcase-features">
+            <span class="section-eyebrow">Scroll to Rotate 360°</span>
+            <h2>Pure Cold-Pressed Virgin Chia Oil</h2>
+            <p class="serif-tagline" style="font-size: 20px; margin-bottom: 16px;">
+              "The highest plant source of heart-friendly Omega-3 ALA."
+            </p>
+            <p style="color: var(--color-text-secondary); line-height: 1.65; margin-bottom: 24px;">
+              Extracted gently in Nyeri without chemicals or heat. Delivers uncompromised essential fatty acids to nourish cell membranes, soothe systemic inflammation, and enhance radiant skin from within.
+            </p>
+
+            <div class="showcase-feature-item">
+              <span class="feature-number">01</span>
+              <div>
+                <h4 style="margin-bottom: 4px;">60%+ Alpha-Linolenic Acid</h4>
+                <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 0;">
+                  Essential fatty acid that supports flexible arteries and healthy cardiovascular circulation.
+                </p>
+              </div>
+            </div>
+
+            <div class="showcase-feature-item">
+              <span class="feature-number">02</span>
+              <div>
+                <h4 style="margin-bottom: 4px;">Suggested Daily Ritual</h4>
+                <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 0;">
+                  Consume one tablespoon daily straight, whisked into salad dressings, or drizzled over Chia Uji.
+                </p>
+              </div>
+            </div>
+
+            <div class="showcase-feature-item">
+              <span class="feature-number">03</span>
+              <div>
+                <h4 style="margin-bottom: 4px;">Available in 3 Sizes</h4>
+                <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 0;">
+                  Pocket 30ml travel dropper, 60ml daily size, and economical 100ml family bottle.
+                </p>
+              </div>
+            </div>
+
+            <div style="margin-top: 12px; display: flex; gap: 16px;">
+              <a href="product.html?id=chia-oil" class="btn btn-primary-lime">
+                <span>View Chia Oil Details</span>
+              </a>
+              <a href="https://wa.me/254759561657?text=Hello%2C%20I%20would%20like%20to%20order%20Afyalishe%20Chia%20Oil." target="_blank" class="btn btn-whatsapp">
+                <span>WhatsApp to Order</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         DR. MONICA VIDEO & FOUNDER'S PHILOSOPHY
+         ==================================================================== -->
+    <section class="section" style="background: #FFFFFF;">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Medical Insight</span>
+          <h2>Watch Dr. Monica on Functional Nutrition</h2>
+          <p class="section-subtitle">
+            Learn why prioritizing whole foods, living probiotics, and prebiotics is the foundation of preventative wellness.
+          </p>
+        </div>
+
+        <div class="video-feature-container">
+          <div class="video-responsive-wrap">
+            <iframe 
+              src="https://www.youtube.com/embed/bYVp3EyTkxg" 
+              title="Dr. Monica on Afyalishe Wellness and Food as Medicine" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+
+          <div style="margin-top: 32px; display: grid; grid-template-columns: 2fr 1fr; gap: 32px; align-items: center;">
+            <div>
+              <h3 style="margin-bottom: 8px;">The Science of "Food as Medicine"</h3>
+              <p style="font-size: 15px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 0;">
+                At Afyalishe Wellness, we bridge clinical nutrition knowledge with traditional East African botanical heritage. Our formulations are crafted to support digestion, balanced glucose response, and sustained natural vitality for the entire family.
+              </p>
+            </div>
+            <div style="text-align: right;">
+              <a href="about.html" class="btn btn-outline">Read Full Story</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         STOCKISTS & WHERE TO BUY HIGHLIGHT
+         ==================================================================== -->
+    <section class="section">
+      <div class="container">
+        <div style="background: #FFFFFF; border-radius: var(--radius-xl); border: 1px solid rgba(88,144,56,0.15); padding: 48px; box-shadow: var(--shadow-card); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;">
+          <div>
+            <span class="section-eyebrow">Available Near You</span>
+            <h2 style="margin-bottom: 16px;">Find Afyalishe in Your Local Supermarket</h2>
+            <p style="font-size: 16px; color: var(--color-text-secondary); line-height: 1.65; margin-bottom: 24px;">
+              Stocked in verified grocery stores and pharmacies across <strong>Nyeri, Nairobi, Juja, Nyahururu, Nanyuki, Naromoru, Meru, Embu, Mweiga, and Chaka</strong>.
+            </p>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+              <a href="where-to-buy.html" class="btn btn-primary-lime">
+                <span>View All Stockists by Town</span>
+              </a>
+              <a href="https://wa.me/254759561657?text=Hello%2C%20where%20is%20the%20closest%20store%20selling%20Afyalishe%20near%20me%3F" target="_blank" class="btn btn-outline">
+                <span>Ask Stockist via WhatsApp</span>
+              </a>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div style="background: var(--color-bg-cream); padding: 16px; border-radius: var(--radius-md); border-left: 3px solid var(--color-primary);">
+              <strong style="color: var(--color-primary);">Nyeri</strong>
+              <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px;">Chieni, Centralmart, Carrymore, Siel</div>
+            </div>
+            <div style="background: var(--color-bg-cream); padding: 16px; border-radius: var(--radius-md); border-left: 3px solid var(--color-primary);">
+              <strong style="color: var(--color-primary);">Nairobi</strong>
+              <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px;">Mkulima, Jambo, Skyhome</div>
+            </div>
+            <div style="background: var(--color-bg-cream); padding: 16px; border-radius: var(--radius-md); border-left: 3px solid var(--color-primary);">
+              <strong style="color: var(--color-primary);">Juja</strong>
+              <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px;">Lakewood, Ecomatt, Alkins, County</div>
+            </div>
+            <div style="background: var(--color-bg-cream); padding: 16px; border-radius: var(--radius-md); border-left: 3px solid var(--color-primary);">
+              <strong style="color: var(--color-primary);">Nanyuki & Nyahururu</strong>
+              <div style="font-size: 13px; color: var(--color-text-secondary); margin-top: 4px;">Chieni Metro, JMart Bargain</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         LATEST BLOG ARTICLES
+         ==================================================================== -->
+    <section class="section" style="background: var(--color-bg-cream);">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Wellness Journal</span>
+          <h2>Insights for Healthy Living</h2>
+          <p class="section-subtitle">
+            Scientific guides on prebiotics, fermented gut nourishment, and functional whole food recipes.
+          </p>
+        </div>
+
+        <div class="grid grid-3">
+          <article class="stockist-card" data-tilt="true">
+            <span class="category-tag" style="margin-bottom: 12px;">Gut Health</span>
+            <h3 style="font-size: 19px; line-height: 1.35; margin-bottom: 8px;">Yacon: Supporting Gut Health Through Prebiotics and Glycaemic Balance</h3>
+            <p style="font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px;">
+              How the Andean-Kenyan root tuber provides natural inulin fibers that nourish healthy intestinal flora without glucose spikes.
+            </p>
+            <a href="blog.html" class="btn btn-outline btn-sm" style="margin-top: auto;">Read Article</a>
+          </article>
+
+          <article class="stockist-card" data-tilt="true">
+            <span class="category-tag" style="margin-bottom: 12px;">Family Nutrition</span>
+            <h3 style="font-size: 19px; line-height: 1.35; margin-bottom: 8px;">Chia Uji Flour: Ancient Sorghum and Millet Power</h3>
+            <p style="font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px;">
+              Reinventing breakfast with calcium, protein, dietary fiber, and plant-based ALA Omega-3 for sustained school and work energy.
+            </p>
+            <a href="blog.html" class="btn btn-outline btn-sm" style="margin-top: auto;">Read Article</a>
+          </article>
+
+          <article class="stockist-card" data-tilt="true">
+            <span class="category-tag" style="margin-bottom: 12px;">Antioxidants</span>
+            <h3 style="font-size: 19px; line-height: 1.35; margin-bottom: 8px;">Hibiscus Roselle: Tangy Ruby Protection for Heart Vitality</h3>
+            <p style="font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 16px;">
+              Anthocyanin-rich roselle tea blends supporting cardiovascular elasticity, hydration, and restful evening calmness.
+            </p>
+            <a href="blog.html" class="btn btn-outline btn-sm" style="margin-top: auto;">Read Article</a>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====================================================================
+         FOOTER: CONTACT DETAILS, P.O. BOX NYERI, NEWSLETTER, PAYMENT BADGES
+         ==================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-grid">
+        <!-- Brand & Contact -->
+        <div class="footer-brand">
+          <img src="assets/images/logo.jpg" alt="Afyalishe Wellness">
+          <p class="footer-tagline">"Food as medicine"</p>
+          <p style="font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 16px;">
+            Natural, innovative food products that promote vitality and wellbeing, all free from artificial additives.
+          </p>
+
+          <div class="footer-contact-item">
+            <span>📍</span>
+            <span>AFYALISHE WELLNESS LTD<br>P.O. Box 2579-10100, Nyeri, Kenya</span>
+          </div>
+          <div class="footer-contact-item">
+            <span>📞</span>
+            <span>
+              <a href="tel:+254759561657">+254 759 561657</a> | 
+              <a href="tel:+254100901170">+254 100 901170</a> | 
+              <a href="tel:+254714915397">+254 714 915397</a>
+            </span>
+          </div>
+          <div class="footer-contact-item">
+            <span>✉️</span>
+            <span><a href="mailto:info@afyalishewellness.co.ke">info@afyalishewellness.co.ke</a></span>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop All Products</a></li>
+            <li><a href="about.html">About Our Brand</a></li>
+            <li><a href="where-to-buy.html">Where to Buy (Stockists)</a></li>
+            <li><a href="services.html">Nutritional Services</a></li>
+            <li><a href="blog.html">Wellness Blog</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories -->
+        <div class="footer-col">
+          <h4>Product Ranges</h4>
+          <ul class="footer-links">
+            <li><a href="shop.html?category=probiotic-drinks-dairy">Probiotic Drinks & Dairy</a></li>
+            <li><a href="shop.html?category=chia-range">Chia Range & Oils</a></li>
+            <li><a href="shop.html?category=hibiscus-herbal-teas">Hibiscus & Herbal Teas</a></li>
+            <li><a href="shop.html?category=snacks-supplements">Snacks & Prebiotics</a></li>
+            <li><a href="checkout.html">Track Order</a></li>
+            <li><a href="privacy-terms.html">Shipping & Returns</a></li>
+            <li><a href="privacy-terms.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter & WhatsApp -->
+        <div class="footer-col">
+          <h4>Stay Connected</h4>
+          <p style="font-size: 13.5px; color: rgba(255,255,255,0.85); line-height: 1.5; margin-bottom: 12px;">
+            Receive seasonal harvest updates, nutritional recipes, and store arrival alerts.
+          </p>
+          <form class="footer-newsletter-form">
+            <input type="email" placeholder="Enter your email" required aria-label="Email address">
+            <button type="submit" class="btn btn-primary-lime btn-sm">Join</button>
+          </form>
+
+          <div style="margin-top: 24px;">
+            <a href="https://wa.me/254759561657" target="_blank" rel="noopener" class="btn btn-whatsapp btn-sm btn-full">
+              <span>💬 Direct Order: +254 759 561657</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <div class="container footer-bottom-container">
+        <div>
+          &copy; 2026 AFYALISHE WELLNESS LTD. All rights reserved. Food as medicine.
+        </div>
+        <div class="payment-badges">
+          <span class="payment-badge mpesa">💚 M-PESA</span>
+          <span class="payment-badge">💳 VISA</span>
+          <span class="payment-badge">💳 MASTERCARD</span>
+          <span class="payment-badge">🚚 Nationwide Delivery</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====================================================================
+       FLOATING WHATSAPP BUTTON (Direct to +254 759 561657)
+       ==================================================================== -->
+  <div class="floating-whatsapp-widget" title="Chat with Afyalishe Wellness on WhatsApp">
+    <div class="whatsapp-bubble">
+      <span>Order or Ask Questions on WhatsApp</span>
+    </div>
+    <a href="https://wa.me/254759561657?text=Hello%20Afyalishe%20Wellness%2C%20I%20would%20like%20to%20inquire%20about%20your%20products." 
+       target="_blank" 
+       rel="noopener" 
+       class="whatsapp-circle-btn" 
+       aria-label="Chat with Afyalishe on WhatsApp">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.187-2.575-5.77-5.767-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.087-.177.182-.076.355.101.173.45 1.011 1.233 1.708.783.697 1.447.915 1.65.987.202.072.321.058.44-.08.118-.138.506-.59.64-.792.134-.202.268-.17.447-.101.179.07 1.134.535 1.33.633.196.098.326.145.373.226.047.081.047.468-.097.873z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- ====================================================================
+       FROSTED GLASS CART DRAWER (Inquiry & Order Bag)
+       ==================================================================== -->
+  <div class="cart-drawer-overlay"></div>
+  <aside class="cart-drawer" aria-label="Your Inquiry & Order Bag">
+    <div class="cart-header">
+      <h3>
+        <span>🛒</span>
+        <span>Order Inquiry Bag</span>
+        <span id="drawer-items-count" style="font-size: 13px; color: var(--color-primary); font-weight: 600; margin-left: 8px;">0 items</span>
+      </h3>
+      <button class="quantity-btn cart-close-btn" aria-label="Close cart">✕</button>
+    </div>
+
+    <!-- Items List -->
+    <div class="cart-items-list" id="cart-drawer-items">
+      <!-- Injected dynamically via ui.js -->
+    </div>
+
+    <!-- Footer Actions -->
+    <div class="cart-footer">
+      <div style="font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.4;">
+        🌿 <em>Prices on request. Directly verified upon order via WhatsApp or Checkout.</em>
+      </div>
+      <button class="btn btn-whatsapp btn-full" id="drawer-whatsapp-btn">
+        <span>💬 Send Inquiry on WhatsApp (+254 759 561657)</span>
+      </button>
+      <a href="checkout.html" class="btn btn-primary-lime btn-full">
+        <span>Proceed to Kenyan Delivery Checkout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ====================================================================
+       SEARCH MODAL
+       ==================================================================== -->
+  <div class="modal-overlay" id="search-modal" role="dialog" aria-modal="true" aria-label="Search Afyalishe Products">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <button class="modal-close-btn search-modal-close" aria-label="Close search">✕</button>
+      <h3 style="margin-bottom: 16px;">Search Our Functional Foods</h3>
+      <div class="search-box-input" style="width: 100%; margin-bottom: 16px; background: #FFFFFF; border: 2px solid var(--color-accent-lime);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="modal-search-input" placeholder="Search kefir, chia seeds, hibiscus, granola..." autocomplete="off">
+      </div>
+      <div id="search-results-list" style="max-height: 340px; overflow-y: auto;">
+        <!-- Search results injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       COOKIE CONSENT BANNER
+       ==================================================================== -->
+  <div class="cookie-banner" role="region" aria-label="Cookie consent">
+    <div class="cookie-banner-content">
+      <h4><span>🍪</span> Cookie & Privacy Preferences</h4>
+      <p>
+        We use essential cookies to maintain your shopping cart, ensure secure payments, and analyze anonymous site traffic to improve our Kenyan nutritional store.
+      </p>
+      <div class="cookie-actions">
+        <button class="btn btn-primary-lime btn-sm btn-accept-cookies">Accept All</button>
+        <button class="btn btn-outline btn-sm btn-reject-cookies">Essential Only</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor Libraries (Bundled locally) -->
+  <script src="assets/vendor/three.min.js"></script>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+
+  <!-- Reusable 3D Motion & E-Commerce Modules -->
+  <script src="assets/js/motion-config.js"></script>
+  <script src="assets/js/custom-cursor.js"></script>
+  <script src="assets/js/magnetic-btn.js"></script>
+  <script src="assets/js/tilt-card.js"></script>
+  <script src="assets/js/hero-scene.js"></script>
+  <script src="assets/js/scroll-showcase.js"></script>
+  <script src="assets/js/product-viewer-3d.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/checkout.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
