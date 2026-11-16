@@ -1,0 +1,10 @@
+# Afyalishe Wellness LTD - Search Spider & Security Policy
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /functions/
+Disallow: /checkout.html?confirmed=
+Disallow: /assets/vendor/
+
+# Canonical Sitemap
+Sitemap: https://afyalishewellness.co.ke/sitemap.xml

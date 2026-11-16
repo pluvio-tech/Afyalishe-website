@@ -1,22 +1,51 @@
-# Cloudflare Pages Headers Configuration
-/*
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: SAMEORIGIN
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: accelerometer=*, camera=(), microphone=(), geolocation=()
+# ==============================================================================
+# CLOUDFLARE PAGES ENTERPRISE CYBERSECURITY & ANTI-PHISHING HEADERS
+# Brand: AFYALISHE WELLNESS LTD (Nyeri, Kenya)
+# ==============================================================================
 
-# Cache static vendor and 3D assets for 1 year
+/*
+  # 1. Anti-Clickjacking & Iframe Hijacking Prevention
+  X-Frame-Options: DENY
+
+  # 2. Strict Content-Type Sniffing Protection
+  X-Content-Type-Options: nosniff
+
+  # 3. Referrer Leaking Prevention
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # 4. Enforce Strict HTTPS & Subdomain Protection (HSTS)
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # 5. Cross-Origin Context Isolation (Anti-Tabnabbing & Spectre Defense)
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+
+  # 6. Restrict Sensitive Device APIs
+  Permissions-Policy: accelerometer=(), camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=()
+
+  # 7. Comprehensive Content Security Policy (Anti-XSS, Anti-Phishing, Anti-Script-Injection)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.youtube.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://wa.me https://api.afyalishewellness.co.ke https://*.cloudflare.com; form-action 'self' https://wa.me; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests;
+
+  # 8. Anti-Cross-Site Scripting Filter for Legacy Browsers
+  X-XSS-Protection: 1; mode=block
+
+# Static Asset Long-Term Caching
 /assets/vendor/*
   Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
 
 /assets/products/*
   Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
 
 /assets/images/*
   Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
 
 /assets/css/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  X-Content-Type-Options: nosniff
 
 /assets/js/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  X-Content-Type-Options: nosniff

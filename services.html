@@ -68,7 +68,7 @@
         </div>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
           <a href="tel:+254759561657" class="btn btn-secondary">Call +254 759 561657</a>
-          <a href="https://wa.me/254759561657?text=Hello%20Afyalishe%20Wellness%2C%20I%20would%20like%20to%20inquire%20about%20your%20services." target="_blank" class="btn btn-primary">
+          <a href="https://wa.me/254759561657?text=Hello%20Afyalishe%20Wellness%2C%20I%20would%20like%20to%20inquire%20about%20your%20services." target="_blank" class="btn btn-primary" rel="noopener noreferrer">
             <span>WhatsApp Consultation</span>
           </a>
         </div>
@@ -86,6 +86,8 @@
       </p>
 
       <form id="service-enquiry-form">
+        <!-- Anti-Bot Honeypot Trap -->
+        <input type="text" name="_bot_trap" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" tabindex="-1" autocomplete="off" aria-hidden="true">
         <input type="hidden" id="enquiry-service-input" name="service">
 
         <div class="form-field">
@@ -120,7 +122,7 @@
 
   <!-- Floating WhatsApp & Cart Drawer -->
   <div class="floating-whatsapp">
-    <a href="https://wa.me/254759561657" target="_blank" class="floating-whatsapp-btn" aria-label="WhatsApp">
+    <a href="https://wa.me/254759561657" target="_blank" class="floating-whatsapp-btn" aria-label="WhatsApp" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.087-.177.182-.076.355.101.173.45 1.011 1.233 1.708.783.697 1.447.915 1.65.987.202.072.321.058.44-.08.118-.138.506-.59.64-.792.134-.202.268-.17.447-.101.179.07 1.134.535 1.33.633.196.098.326.145.373.226.047.081.047.468-.097.873z"/></svg>
     </a>
   </div>
