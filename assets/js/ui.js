@@ -1,6 +1,11 @@
 /**
- * AFYALISHE WELLNESS - UI CONTROLLER
- * Cart drawer, Search modal, Mobile navigation, Cookie banner, Toast notifications
+ * AFYALISHE WELLNESS - UI INTERACTIONS
+ * Cart drawer, Search modal, Mobile navigation, Toast notifications
+ * Adheres to:
+ * - Rule 1: No filler badges
+ * - Rule 12: Consistent SVG icons (no emojis in headings or toasts)
+ * - Rule 18: Tabular numbers
+ * - Rule 20: Fast, purposeful feedback
  */
 
 window.AFYALISHE_UI = {
@@ -8,12 +13,10 @@ window.AFYALISHE_UI = {
     this.initCartDrawer();
     this.initMobileNav();
     this.initSearchModal();
-    this.initCookieBanner();
     this.initServiceModal();
     this.initToastSystem();
     this.updateCartBadge();
 
-    // Listen for cart changes
     window.addEventListener('cart:updated', () => {
       this.updateCartBadge();
       this.renderCartDrawerItems();
@@ -26,8 +29,8 @@ window.AFYALISHE_UI = {
   initCartDrawer() {
     const openBtns = document.querySelectorAll('.btn-open-cart, .icon-btn-cart');
     const closeBtn = document.querySelector('.cart-close-btn');
-    const overlay = document.querySelector('.cart-drawer-overlay');
-    const drawer = document.querySelector('.cart-drawer');
+    const overlay = document.querySelector('.cart-overlay');
+    const panel = document.querySelector('.cart-drawer-panel');
 
     openBtns.forEach((btn) => {
       btn.addEventListener('click', (e) => {
@@ -36,15 +39,9 @@ window.AFYALISHE_UI = {
       });
     });
 
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => this.closeCartDrawer());
-    }
+    closeBtn?.addEventListener('click', () => this.closeCartDrawer());
+    overlay?.addEventListener('click', () => this.closeCartDrawer());
 
-    if (overlay) {
-      overlay.addEventListener('click', () => this.closeCartDrawer());
-    }
-
-    // Direct WhatsApp order from cart drawer
     const waCartBtn = document.getElementById('drawer-whatsapp-btn');
     if (waCartBtn) {
       waCartBtn.addEventListener('click', () => {
@@ -56,21 +53,21 @@ window.AFYALISHE_UI = {
   },
 
   openCartDrawer() {
-    const overlay = document.querySelector('.cart-drawer-overlay');
-    const drawer = document.querySelector('.cart-drawer');
-    if (overlay && drawer) {
+    const overlay = document.querySelector('.cart-overlay');
+    const panel = document.querySelector('.cart-drawer-panel');
+    if (overlay && panel) {
       overlay.classList.add('open');
-      drawer.classList.add('open');
+      panel.classList.add('open');
       this.renderCartDrawerItems();
     }
   },
 
   closeCartDrawer() {
-    const overlay = document.querySelector('.cart-drawer-overlay');
-    const drawer = document.querySelector('.cart-drawer');
-    if (overlay && drawer) {
+    const overlay = document.querySelector('.cart-overlay');
+    const panel = document.querySelector('.cart-drawer-panel');
+    if (overlay && panel) {
       overlay.classList.remove('open');
-      drawer.classList.remove('open');
+      panel.classList.remove('open');
     }
   },
 
@@ -80,17 +77,17 @@ window.AFYALISHE_UI = {
     if (!container) return;
 
     const cart = window.AFYALISHE_STORE.getCart();
-    if (countBadge) countBadge.textContent = `${window.AFYALISHE_STORE.getCartCount()} items`;
+    const count = window.AFYALISHE_STORE.getCartCount();
+    if (countBadge) countBadge.textContent = `${count} items`;
 
     if (cart.length === 0) {
       container.innerHTML = `
-        <div style="text-align: center; padding: 40px 20px;">
-          <div style="font-size: 40px; margin-bottom: 12px; color: var(--color-primary);">🌿</div>
+        <div style="text-align: center; padding: 48px 16px;">
           <h4 style="margin-bottom: 6px;">Your inquiry bag is empty</h4>
-          <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 20px;">
-            Explore our probiotic ferments, chia superfoods, and herbal teas.
+          <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 16px;">
+            Explore our probiotic beverages, chia seeds, and herbal teas.
           </p>
-          <a href="shop.html" class="btn btn-primary-lime btn-sm">Browse Products</a>
+          <a href="shop.html" class="btn btn-secondary btn-sm" onclick="window.AFYALISHE_UI.closeCartDrawer()">Browse Products</a>
         </div>
       `;
       return;
@@ -99,24 +96,24 @@ window.AFYALISHE_UI = {
     let html = '';
     cart.forEach((item, index) => {
       html += `
-        <div class="cart-item">
-          <div class="cart-item-img">
+        <div class="cart-drawer-item">
+          <div class="cart-drawer-item-img">
             <img src="${item.image}" alt="${item.name}">
           </div>
-          <div class="cart-item-details">
-            <h4>${item.name}</h4>
-            <div class="cart-item-meta">
-              ${item.size ? `Size: <strong>${item.size}</strong>` : ''}
-              ${item.flavour ? ` | Flavour: <strong>${item.flavour}</strong>` : ''}
+          <div>
+            <h4 style="font-size: 14px; margin-bottom: 2px;">${item.name}</h4>
+            <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px;">
+              ${item.size ? `<span class="tabular-nums">${item.size}</span>` : ''}
+              ${item.flavour ? ` &bull; ${item.flavour}` : ''}
             </div>
-            <div class="quantity-stepper">
-              <button class="quantity-btn" onclick="window.AFYALISHE_STORE.updateQuantity(${index}, -1)">−</button>
-              <span class="quantity-val">${item.quantity}</span>
-              <button class="quantity-btn" onclick="window.AFYALISHE_STORE.updateQuantity(${index}, 1)">+</button>
+            <div class="cart-stepper">
+              <button class="cart-stepper-btn" onclick="window.AFYALISHE_STORE.updateQuantity(${index}, -1)" aria-label="Decrease">&minus;</button>
+              <span class="cart-stepper-val">${item.quantity}</span>
+              <button class="cart-stepper-btn" onclick="window.AFYALISHE_STORE.updateQuantity(${index}, 1)" aria-label="Increase">+</button>
             </div>
           </div>
           <div>
-            <button class="quantity-btn" style="color: var(--color-danger);" onclick="window.AFYALISHE_STORE.removeFromCart(${index})" title="Remove item">✕</button>
+            <button class="cart-stepper-btn" style="color: var(--color-allergen);" onclick="window.AFYALISHE_STORE.removeFromCart(${index})" title="Remove item" aria-label="Remove item">&times;</button>
           </div>
         </div>
       `;
@@ -139,22 +136,20 @@ window.AFYALISHE_UI = {
   // ------------------------------------------------------------------------
   initMobileNav() {
     const hamburger = document.querySelector('.hamburger-btn');
-    const mobileMenu = document.querySelector('.mobile-nav-drawer');
-    const mobileOverlay = document.querySelector('.mobile-nav-overlay');
+    const mobilePanel = document.querySelector('.mobile-nav-drawer');
+    const overlay = document.querySelector('.mobile-nav-overlay');
 
     if (!hamburger) return;
 
     hamburger.addEventListener('click', () => {
-      if (mobileMenu) mobileMenu.classList.toggle('open');
-      if (mobileOverlay) mobileOverlay.classList.toggle('open');
+      mobilePanel?.classList.toggle('open');
+      overlay?.classList.toggle('open');
     });
 
-    if (mobileOverlay) {
-      mobileOverlay.addEventListener('click', () => {
-        if (mobileMenu) mobileMenu.classList.remove('open');
-        mobileOverlay.classList.remove('open');
-      });
-    }
+    overlay?.addEventListener('click', () => {
+      mobilePanel?.classList.remove('open');
+      overlay?.classList.remove('open');
+    });
   },
 
   // ------------------------------------------------------------------------
@@ -173,7 +168,7 @@ window.AFYALISHE_UI = {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         modal.classList.add('open');
-        setTimeout(() => input?.focus(), 100);
+        setTimeout(() => input?.focus(), 80);
       });
     });
 
@@ -186,27 +181,27 @@ window.AFYALISHE_UI = {
       input.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
         if (query.length < 2) {
-          resultsContainer.innerHTML = '<p style="padding: 15px; color: var(--color-text-secondary);">Type at least 2 characters to search...</p>';
+          resultsContainer.innerHTML = '<p style="padding: 12px; color: var(--color-text-secondary); font-size: 13.5px;">Type at least 2 characters to search...</p>';
           return;
         }
 
-        const matchedProducts = window.AFYALISHE_STORE.products.filter(
+        const matches = window.AFYALISHE_STORE.products.filter(
           (p) => p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query)
         );
 
-        if (matchedProducts.length === 0) {
-          resultsContainer.innerHTML = `<p style="padding: 15px; color: var(--color-text-secondary);">No products found matching "${query}".</p>`;
+        if (matches.length === 0) {
+          resultsContainer.innerHTML = `<p style="padding: 12px; color: var(--color-text-secondary); font-size: 13.5px;">No products found matching "${query}".</p>`;
           return;
         }
 
         let html = '';
-        matchedProducts.forEach((p) => {
+        matches.forEach((p) => {
           html += `
-            <a href="product.html?id=${p.id}" class="search-result-item" style="display: flex; align-items: center; gap: 14px; padding: 12px; border-bottom: 1px solid rgba(0,0,0,0.06); text-decoration: none; color: inherit;">
-              <img src="${p.image}" alt="${p.name}" style="width: 48px; height: 48px; object-fit: contain; border-radius: 6px; background: #f7f5f4;">
+            <a href="product.html?id=${p.id}" style="display: flex; align-items: center; gap: 12px; padding: 10px; border-bottom: 1px solid var(--color-border-subtle); text-decoration: none; color: inherit;">
+              <img src="${p.image}" alt="${p.name}" style="width: 44px; height: 44px; object-fit: contain; border-radius: 4px; background: #f7f4f2;">
               <div>
-                <strong style="display: block; font-family: var(--font-heading); font-size: 15px; color: var(--color-text-charcoal);">${p.name}</strong>
-                <span style="font-size: 12px; color: var(--color-catalogue-green);">${p.categoryName}</span>
+                <strong style="display: block; font-family: var(--font-heading); font-size: 14.5px; color: var(--color-text-primary);">${p.name}</strong>
+                <span style="font-size: 12px; color: var(--color-primary);">${p.categoryName}</span>
               </div>
             </a>
           `;
@@ -217,35 +212,7 @@ window.AFYALISHE_UI = {
   },
 
   // ------------------------------------------------------------------------
-  // 4. Cookie Banner
-  // ------------------------------------------------------------------------
-  initCookieBanner() {
-    const banner = document.querySelector('.cookie-banner');
-    if (!banner) return;
-
-    const accepted = localStorage.getItem('afyalishe_cookie_consent');
-    if (!accepted) {
-      setTimeout(() => banner.classList.add('visible'), 1200);
-    }
-
-    const acceptBtn = banner.querySelector('.btn-accept-cookies');
-    const rejectBtn = banner.querySelector('.btn-reject-cookies');
-
-    acceptBtn?.addEventListener('click', () => {
-      localStorage.setItem('afyalishe_cookie_consent', 'all');
-      banner.classList.remove('visible');
-      this.showToast('Cookie preferences saved.');
-    });
-
-    rejectBtn?.addEventListener('click', () => {
-      localStorage.setItem('afyalishe_cookie_consent', 'necessary');
-      banner.classList.remove('visible');
-      this.showToast('Only necessary cookies enabled.');
-    });
-  },
-
-  // ------------------------------------------------------------------------
-  // 5. Service Enquiry Modal
+  // 4. Service Enquiry Modal
   // ------------------------------------------------------------------------
   initServiceModal() {
     const modal = document.getElementById('service-enquiry-modal');
@@ -258,17 +225,14 @@ window.AFYALISHE_UI = {
     });
 
     const form = document.getElementById('service-enquiry-form');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const serviceName = document.getElementById('service-modal-title')?.textContent || 'Service';
-        modal.classList.remove('open');
-        this.showToast(`Thank you! Your enquiry for "${serviceName}" has been received. Our team will contact you shortly.`);
-        form.reset();
-      });
-    }
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const serviceName = document.getElementById('service-modal-title')?.textContent || 'Service';
+      modal.classList.remove('open');
+      this.showToast(`Enquiry for "${serviceName}" received. Our team will contact you.`);
+      form.reset();
+    });
 
-    // Open buttons
     document.querySelectorAll('.btn-book-service').forEach((btn) => {
       btn.addEventListener('click', () => {
         const serviceId = btn.dataset.serviceId;
@@ -285,7 +249,7 @@ window.AFYALISHE_UI = {
   },
 
   // ------------------------------------------------------------------------
-  // 6. Toast System
+  // 5. Toast System (Rule 12: No random emojis, clean feedback)
   // ------------------------------------------------------------------------
   initToastSystem() {
     let container = document.getElementById('toast-container');
@@ -306,30 +270,27 @@ window.AFYALISHE_UI = {
     }
   },
 
-  showToast(message, type = 'success') {
+  showToast(message) {
     const container = document.getElementById('toast-container');
     if (!container) return;
 
     const toast = document.createElement('div');
     toast.style.cssText = `
       background: #FFFFFF;
-      color: var(--color-text-charcoal);
-      border-left: 4px solid ${type === 'success' ? '#7AC143' : '#BE7133'};
-      padding: 12px 18px;
-      border-radius: 8px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-      font-size: 14px;
+      color: var(--color-text-primary);
+      border-left: 3px solid var(--color-primary);
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-hover);
+      font-size: 13.5px;
       font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 10px;
       pointer-events: auto;
-      transform: translateY(20px);
+      transform: translateY(12px);
       opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      max-width: 380px;
+      transition: all 0.2s var(--ease-feedback);
+      max-width: 360px;
     `;
-    toast.innerHTML = `<span>🌿</span> <div>${message}</div>`;
+    toast.textContent = message;
     container.appendChild(toast);
 
     setTimeout(() => {
@@ -338,10 +299,10 @@ window.AFYALISHE_UI = {
     }, 10);
 
     setTimeout(() => {
-      toast.style.transform = 'translateY(20px)';
+      toast.style.transform = 'translateY(12px)';
       toast.style.opacity = '0';
-      setTimeout(() => toast.remove(), 300);
-    }, 3800);
+      setTimeout(() => toast.remove(), 200);
+    }, 3200);
   }
 };
 

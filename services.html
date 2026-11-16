@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wellness Services & Consulting | Afyalishe Wellness Kenya</title>
-  <meta name="description" content="Professional nutritional consulting, functional food product development, corporate wellness workshops, Mt. Kenya wellness retreats, and customized family meal plans.">
+  <meta name="description" content="Nutritional consulting, functional food product development, corporate wellness workshops, Mt. Kenya wellness retreats, and customized family meal plans.">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=League+Spartan:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Hanken+Grotesk:wght@400;500;600;700&family=League+Spartan:wght@600;700;800&family=Lora:wght@500;600&display=swap" rel="stylesheet">
 
   <!-- Core Styles -->
   <link rel="stylesheet" href="assets/css/variables.css">
@@ -19,13 +19,12 @@
   <link rel="stylesheet" href="assets/css/pages.css">
 </head>
 <body>
-  <div class="grain-overlay" aria-hidden="true"></div>
 
-  <!-- Header -->
+  <!-- Sticky Header -->
   <header class="site-header">
     <div class="container header-container">
       <a href="index.html" class="header-logo" aria-label="Afyalishe Wellness Home">
-        <img src="assets/images/logo.jpg" alt="Afyalishe Wellness Logo">
+        <img src="assets/images/logo.jpg" alt="Afyalishe Wellness">
       </a>
       <nav class="nav-desktop" aria-label="Main Navigation">
         <a href="index.html" class="nav-link">Home</a>
@@ -37,8 +36,8 @@
         <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <div class="header-actions">
-        <button class="icon-btn btn-open-search" aria-label="Search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
-        <button class="icon-btn icon-btn-cart btn-open-cart" aria-label="View Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><span class="cart-count-badge" style="display: none;">0</span></button>
+        <button class="icon-btn btn-open-search" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+        <button class="icon-btn icon-btn-cart btn-open-cart" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><span class="cart-count-badge" style="display: none;">0</span></button>
         <button class="hamburger-btn" aria-label="Menu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -46,32 +45,31 @@
 
   <main class="section">
     <div class="container">
-      <!-- Page Header -->
-      <div class="section-header">
-        <span class="section-eyebrow">Professional Services</span>
-        <h1 style="font-size: var(--font-size-h1); margin-bottom: 12px;">Holistic Nutritional Services</h1>
-        <p class="section-subtitle">
-          From one-on-one clinical nutritional consulting and custom family meal plans to corporate workshops and functional food formulation.
+      <div style="margin-bottom: 36px;">
+        <span class="brand-tagline" style="display: block; margin-bottom: 4px;">Evidence-Based Nutrition</span>
+        <h1 style="font-size: var(--font-size-h1); margin-bottom: 8px;">Nutritional Consulting &amp; Food Formulation</h1>
+        <p style="font-size: 15px; color: var(--color-text-secondary); max-width: 640px;">
+          Individual dietary consulting, corporate wellness masterclasses, botanical food development, and restorative Mount Kenya wellness retreats.
         </p>
       </div>
 
-      <!-- Services Grid: 5 Services with 3D Tilt -->
-      <div class="services-grid" id="services-grid-container" style="margin-bottom: 60px;">
-        <!-- Injected dynamically via main.js with 3D tilt cards -->
+      <!-- Services Grid: 5 Clean Cards (Rule 8: Group with spacing, Rule 14: Concentric radii) -->
+      <div class="grid grid-3" id="services-grid-container" style="margin-bottom: 48px;">
+        <!-- Injected dynamically via main.js following the 20 rules -->
       </div>
 
-      <!-- Quick Consultation Callout -->
-      <div style="background: #FFFFFF; border-radius: var(--radius-xl); border: 1px solid rgba(88,144,56,0.15); padding: 48px; box-shadow: var(--shadow-card); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+      <!-- Direct Consultation Box -->
+      <div style="background: var(--color-bg-surface); border-radius: var(--radius-panel-outer); border: 1px solid var(--color-border); padding: 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
         <div>
-          <h3 style="margin-bottom: 8px;">Have a Custom Wellness Project or Question?</h3>
-          <p style="font-size: 15px; color: var(--color-text-secondary); margin-bottom: 0;">
-            Speak directly with our nutrition team in Nyeri via phone or WhatsApp.
+          <h2 style="font-size: 20px; margin-bottom: 4px;">Have a Formulation or Corporate Inquiry?</h2>
+          <p style="font-size: 14px; color: var(--color-text-secondary); margin-bottom: 0;">
+            Speak directly with our clinical and technical food specialists in Nyeri.
           </p>
         </div>
-        <div style="display: flex; gap: 14px;">
-          <a href="tel:+254759561657" class="btn btn-outline">Call +254 759 561657</a>
-          <a href="https://wa.me/254759561657?text=Hello%20Afyalishe%20Wellness%2C%20I%20would%20like%20to%20inquire%20about%20your%20services." target="_blank" class="btn btn-whatsapp">
-            <span>💬 WhatsApp Consultation</span>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="tel:+254759561657" class="btn btn-secondary">Call +254 759 561657</a>
+          <a href="https://wa.me/254759561657?text=Hello%20Afyalishe%20Wellness%2C%20I%20would%20like%20to%20inquire%20about%20your%20services." target="_blank" class="btn btn-primary">
+            <span>WhatsApp Consultation</span>
           </a>
         </div>
       </div>
@@ -79,117 +77,64 @@
   </main>
 
   <!-- Service Enquiry Modal -->
-  <div class="modal-overlay" id="service-enquiry-modal" role="dialog" aria-modal="true">
-    <div class="modal-dialog">
-      <button class="modal-close-btn">✕</button>
-      <span class="section-eyebrow" style="margin-bottom: 8px;">Booking Inquiry</span>
-      <h3 id="service-modal-title" style="margin-bottom: 4px;">Nutritional Consulting</h3>
-      <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 20px;">
-        Fill out your details below and our team will get back to you within 24 hours.
+  <div class="cart-overlay" id="service-enquiry-modal" role="dialog" aria-modal="true">
+    <div style="background: #FFFFFF; max-width: 480px; width: 90%; margin: 80px auto; border-radius: var(--radius-panel-outer); padding: var(--padding-panel); position: relative; box-shadow: var(--shadow-modal);">
+      <button class="cart-stepper-btn modal-close-btn" style="position: absolute; top: 16px; right: 16px;" aria-label="Close">&times;</button>
+      <h3 id="service-modal-title" style="font-size: 18px; margin-bottom: 4px;">Nutritional Consulting</h3>
+      <p style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 16px;">
+        Leave your details and our team will contact you within 24 hours.
       </p>
 
       <form id="service-enquiry-form">
         <input type="hidden" id="enquiry-service-input" name="service">
 
-        <div class="form-group">
-          <label class="form-label" for="client-name">Your Full Name *</label>
-          <input type="text" id="client-name" class="form-control" required placeholder="e.g. Wanjiku Mwangi">
+        <div class="form-field">
+          <input type="text" id="client-name" class="form-input" required placeholder="Full Name">
         </div>
 
-        <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-          <div>
-            <label class="form-label" for="client-phone">Phone Number *</label>
-            <input type="tel" id="client-phone" class="form-control" required placeholder="e.g. 0759 561657">
-          </div>
-          <div>
-            <label class="form-label" for="client-email">Email Address</label>
-            <input type="email" id="client-email" class="form-control" placeholder="name@domain.com">
-          </div>
+        <div class="form-field" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <input type="tel" id="client-phone" class="form-input tabular-nums" required placeholder="Phone (0759 561657)">
+          <input type="email" id="client-email" class="form-input" placeholder="Email Address">
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="client-notes">Specific Goals or Questions</label>
-          <textarea id="client-notes" class="form-control" rows="3" placeholder="Tell us about your dietary goals, event size, or formulation needs..."></textarea>
+        <div class="form-field">
+          <textarea id="client-notes" class="form-input" rows="3" placeholder="Dietary goals, company size, or product formulation details..."></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary-lime btn-full">
-          <span>Submit Service Booking Request</span>
-        </button>
+        <button type="submit" class="btn btn-primary btn-full">Submit Booking Request</button>
       </form>
     </div>
   </div>
 
-  <!-- Footer -->
+  <!-- Clean Footer -->
   <footer class="site-footer">
-    <div class="container footer-top">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <img src="assets/images/logo.jpg" alt="Afyalishe Wellness">
-          <p class="footer-tagline">"Food as medicine"</p>
-          <div class="footer-contact-item"><span>📍</span><span>AFYALISHE WELLNESS LTD<br>P.O. Box 2579-10100, Nyeri, Kenya</span></div>
-          <div class="footer-contact-item"><span>📞</span><span><a href="tel:+254759561657">+254 759 561657</a> | <a href="tel:+254100901170">+254 100 901170</a></span></div>
-        </div>
-        <div class="footer-col">
-          <h4>Navigation</h4>
-          <ul class="footer-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="shop.html">Shop All</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="where-to-buy.html">Where to Buy</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Product Ranges</h4>
-          <ul class="footer-links">
-            <li><a href="shop.html?category=probiotic-drinks-dairy">Probiotic Drinks & Dairy</a></li>
-            <li><a href="shop.html?category=chia-range">Chia Range</a></li>
-            <li><a href="shop.html?category=hibiscus-herbal-teas">Hibiscus & Herbal Teas</a></li>
-            <li><a href="shop.html?category=snacks-supplements">Snacks & Supplements</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Direct Inquiries</h4>
-          <p style="font-size: 13.5px; color: rgba(255,255,255,0.85); line-height: 1.5; margin-bottom: 12px;">
-            Book retreats and corporate wellness events directly via WhatsApp.
-          </p>
-          <a href="https://wa.me/254759561657" target="_blank" class="btn btn-whatsapp btn-sm btn-full">
-            <span>💬 WhatsApp +254 759 561657</span>
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container footer-bottom-container">
-        <div>&copy; 2026 AFYALISHE WELLNESS LTD. Nyeri, Kenya.</div>
-        <div class="payment-badges">
-          <span class="payment-badge mpesa">💚 M-PESA</span>
-          <span class="payment-badge">💳 VISA / MASTERCARD</span>
-        </div>
+    <div class="container footer-bottom" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+      <div>&copy; 2026 AFYALISHE WELLNESS LTD. Nyeri, Kenya. Food as medicine.</div>
+      <div style="display: flex; gap: 12px; font-size: 13px;">
+        <a href="shop.html" style="color: rgba(255,255,255,0.85);">Products</a>
+        <span>&bull;</span>
+        <a href="contact.html" style="color: rgba(255,255,255,0.85);">Contact</a>
       </div>
     </div>
   </footer>
 
   <!-- Floating WhatsApp & Cart Drawer -->
-  <div class="floating-whatsapp-widget">
-    <div class="whatsapp-bubble">Order on WhatsApp</div>
-    <a href="https://wa.me/254759561657" target="_blank" class="whatsapp-circle-btn" aria-label="WhatsApp">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.087-.177.182-.076.355.101.173.45 1.011 1.233 1.708.783.697 1.447.915 1.65.987.202.072.321.058.44-.08.118-.138.506-.59.64-.792.134-.202.268-.17.447-.101.179.07 1.134.535 1.33.633.196.098.326.145.373.226.047.081.047.468-.097.873z"/></svg>
+  <div class="floating-whatsapp">
+    <a href="https://wa.me/254759561657" target="_blank" class="floating-whatsapp-btn" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.698c.969.585 1.961.947 2.796.947 3.179 0 5.766-2.587 5.767-5.766.001-3.187-2.575-5.77-5.772zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.087-.177.182-.076.355.101.173.45 1.011 1.233 1.708.783.697 1.447.915 1.65.987.202.072.321.058.44-.08.118-.138.506-.59.64-.792.134-.202.268-.17.447-.101.179.07 1.134.535 1.33.633.196.098.326.145.373.226.047.081.047.468-.097.873z"/></svg>
     </a>
   </div>
 
-  <div class="cart-drawer-overlay"></div>
-  <aside class="cart-drawer" aria-label="Cart">
-    <div class="cart-header">
-      <h3><span>🛒</span><span>Order Inquiry Bag</span></h3>
-      <button class="quantity-btn cart-close-btn">✕</button>
+  <div class="cart-overlay"></div>
+  <aside class="cart-drawer-panel" aria-label="Cart">
+    <div class="cart-drawer-head">
+      <h3>Inquiry Bag</h3>
+      <button class="cart-stepper-btn cart-close-btn">&times;</button>
     </div>
     <div class="cart-items-list" id="cart-drawer-items"></div>
-    <div class="cart-footer">
-      <button class="btn btn-whatsapp btn-full" id="drawer-whatsapp-btn"><span>💬 Send Inquiry on WhatsApp</span></button>
-      <a href="checkout.html" class="btn btn-primary-lime btn-full"><span>Proceed to Checkout</span></a>
+    <div class="cart-drawer-foot">
+      <button class="btn btn-whatsapp-action btn-full" id="drawer-whatsapp-btn">Send Bag via WhatsApp</button>
+      <a href="checkout.html" class="btn btn-primary btn-full">Proceed to Checkout</a>
     </div>
   </aside>
 

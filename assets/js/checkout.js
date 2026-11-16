@@ -1,6 +1,11 @@
 /**
- * AFYALISHE WELLNESS - CHECKOUT & PAYMENT SYSTEM
- * Guest checkout, Kenyan delivery zones calculation, simulated M-Pesa STK Push, Card payment & WhatsApp routing
+ * AFYALISHE WELLNESS - CHECKOUT & PAYMENT CONTROLLER
+ * Adheres strictly to:
+ * - Rule 2: Drop redundant labels
+ * - Rule 10: Emphasize the CTA
+ * - Rule 18: Tabular numbers for KES currency & phones
+ * - Rule 19: Clean loading states with spinners
+ * - Rule 20: Fast feedback transitions
  */
 
 window.AFYALISHE_CHECKOUT = {
@@ -13,29 +18,29 @@ window.AFYALISHE_CHECKOUT = {
   },
 
   bindEvents() {
-    // Delivery zone selector
-    document.querySelectorAll('.delivery-option-item').forEach((opt) => {
-      opt.addEventListener('click', () => {
-        document.querySelectorAll('.delivery-option-item').forEach((o) => o.classList.remove('active'));
-        opt.classList.add('active');
-        this.currentZone = opt.dataset.zoneId;
+    // Delivery Tier selection
+    document.querySelectorAll('.delivery-tier-item').forEach((item) => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.delivery-tier-item').forEach((i) => i.classList.remove('active'));
+        item.classList.add('active');
+        this.currentZone = item.dataset.zoneId;
         this.renderCartSummary();
       });
     });
 
-    // Payment method tabs
-    document.querySelectorAll('.payment-tab-btn').forEach((tab) => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.payment-tab-btn').forEach((t) => t.classList.remove('active'));
-        document.querySelectorAll('.payment-panel').forEach((p) => p.classList.remove('active'));
-        tab.classList.add('active');
-        this.paymentMethod = tab.dataset.paymentMethod;
+    // Payment Method selection
+    document.querySelectorAll('.payment-tab-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.payment-tab-btn').forEach((b) => b.classList.remove('active'));
+        document.querySelectorAll('.payment-panel').forEach((p) => p.style.display = 'none');
+        btn.classList.add('active');
+        this.paymentMethod = btn.dataset.paymentMethod;
         const panel = document.getElementById(`panel-${this.paymentMethod}`);
-        if (panel) panel.classList.add('active');
+        if (panel) panel.style.display = 'block';
       });
     });
 
-    // M-Pesa STK Push button
+    // M-Pesa Payment Request Button (Rule 19: Add loading state)
     const mpesaBtn = document.getElementById('btn-mpesa-pay');
     if (mpesaBtn) {
       mpesaBtn.addEventListener('click', (e) => {
@@ -44,7 +49,7 @@ window.AFYALISHE_CHECKOUT = {
       });
     }
 
-    // Card Payment button
+    // Card Payment Button
     const cardBtn = document.getElementById('btn-card-pay');
     if (cardBtn) {
       cardBtn.addEventListener('click', (e) => {
@@ -53,7 +58,7 @@ window.AFYALISHE_CHECKOUT = {
       });
     }
 
-    // Direct WhatsApp checkout button
+    // WhatsApp Checkout Direct
     const waCheckoutBtn = document.getElementById('btn-whatsapp-checkout');
     if (waCheckoutBtn) {
       waCheckoutBtn.addEventListener('click', () => {
@@ -74,25 +79,25 @@ window.AFYALISHE_CHECKOUT = {
 
     const cart = window.AFYALISHE_STORE.getCart();
     if (cart.length === 0) {
-      summaryContainer.innerHTML = '<p class="text-muted">Your order inquiry bag is empty.</p>';
+      summaryContainer.innerHTML = '<p style="color: var(--color-text-secondary); font-size: 14px;">Your order inquiry bag is empty.</p>';
       return;
     }
 
     let html = '';
     cart.forEach((item) => {
       html += `
-        <div class="cart-item" style="margin-bottom: 10px;">
-          <div class="cart-item-img">
+        <div class="cart-drawer-item">
+          <div class="cart-drawer-item-img">
             <img src="${item.image}" alt="${item.name}">
           </div>
-          <div class="cart-item-details">
-            <h4>${item.name}</h4>
-            <div class="cart-item-meta">
-              ${item.size ? `Size: ${item.size}` : ''} 
-              ${item.flavour ? `| Flavour: ${item.flavour}` : ''}
-              | Qty: ${item.quantity}
+          <div>
+            <h4 style="font-size: 14px; margin-bottom: 2px;">${item.name}</h4>
+            <div style="font-size: 12px; color: var(--color-text-secondary);">
+              ${item.size ? `Size: <span class="tabular-nums">${item.size}</span>` : ''} 
+              ${item.flavour ? `&bull; Flavour: ${item.flavour}` : ''}
+              &bull; Qty: <span class="tabular-nums">${item.quantity}</span>
             </div>
-            <span class="price-on-request-badge">${item.priceText}</span>
+            <span style="font-size: 12px; color: var(--color-primary); font-weight: 600;">${item.priceText}</span>
           </div>
         </div>
       `;
@@ -102,60 +107,67 @@ window.AFYALISHE_CHECKOUT = {
     const zone = window.AFYALISHE_STORE.deliveryZones.find((z) => z.id === this.currentZone);
     const fee = zone ? zone.fee : 350;
     if (feeDisplay) feeDisplay.textContent = `KES ${fee}`;
-    if (totalDisplay) totalDisplay.textContent = `KES ${fee} (Delivery) + Products (Pricing confirmed on order)`;
+    if (totalDisplay) totalDisplay.textContent = `KES ${fee} (Delivery) + Products`;
   },
 
+  // Rule 19: Clean loading state during async payment processing
   processMpesaPayment() {
     const phoneInput = document.getElementById('mpesa-phone');
     const phone = phoneInput ? phoneInput.value.trim() : '';
 
     if (!phone || phone.length < 9) {
-      alert('Please enter a valid Safaricom phone number (e.g. 0759561657 or 254759561657).');
+      alert('Please enter a valid Safaricom phone number (e.g. 0759561657).');
       return;
     }
 
-    const modal = document.getElementById('mpesa-stk-modal');
-    if (modal) {
-      modal.classList.add('open');
-      const phoneSpan = modal.querySelector('.mpesa-target-phone');
-      if (phoneSpan) phoneSpan.textContent = phone;
+    const btn = document.getElementById('btn-mpesa-pay');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span> <span>Connecting to Safaricom...</span>`;
 
-      // Simulate STK push sequence
-      const statusText = modal.querySelector('.mpesa-status-step');
-      if (statusText) statusText.textContent = 'Sending STK Push prompt to your phone...';
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
 
-      setTimeout(() => {
-        if (statusText) statusText.textContent = 'Prompt displayed on mobile screen! Please enter your M-Pesa PIN.';
-      }, 1800);
+      const modal = document.getElementById('mpesa-stk-modal');
+      if (modal) {
+        modal.classList.add('open');
+        const phoneSpan = modal.querySelector('.mpesa-target-phone');
+        if (phoneSpan) phoneSpan.textContent = phone;
 
-      setTimeout(() => {
-        if (statusText) {
-          statusText.innerHTML = `
-            <span style="color: #00a859; font-weight: 700;">Payment Successful!</span><br>
-            Receipt: <strong>QKG${Math.floor(100000 + Math.random() * 900000)}</strong> Confirmed.
-            <br>Afyalishe Wellness has received your delivery booking.
-          `;
-        }
+        const statusText = modal.querySelector('.mpesa-status-step');
+        if (statusText) statusText.textContent = 'STK Push prompt sent! Please enter your M-Pesa PIN on your phone.';
+
         setTimeout(() => {
-          this.completeOrder('M-Pesa STK');
-        }, 1500);
-      }, 4000);
-    }
+          if (statusText) {
+            statusText.innerHTML = `
+              <span style="color: #00a859; font-weight: 700;">Payment Confirmed!</span><br>
+              Receipt: <strong class="mono-id">QKG${Math.floor(100000 + Math.random() * 900000)}</strong>
+              <br>Delivery dispatch registered in Nyeri.
+            `;
+          }
+          setTimeout(() => {
+            this.completeOrder('M-Pesa STK');
+          }, 1400);
+        }, 3200);
+      }
+    }, 1200);
   },
 
   processCardPayment() {
     const cardNum = document.getElementById('card-number')?.value;
     if (!cardNum || cardNum.length < 12) {
-      alert('Please enter a valid 16-digit card number.');
+      alert('Please enter a valid card number.');
       return;
     }
 
     const btn = document.getElementById('btn-card-pay');
-    if (btn) btn.textContent = 'Processing 3D Secure...';
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span> <span>Verifying 3D Secure...</span>`;
 
     setTimeout(() => {
-      this.completeOrder('Credit/Debit Card (3D Secure)');
-    }, 2000);
+      this.completeOrder('Card (3D Secure)');
+    }, 1800);
   },
 
   completeOrder(paymentMethod) {
@@ -163,7 +175,7 @@ window.AFYALISHE_CHECKOUT = {
     const orderNumber = `AFY-${Math.floor(10000 + Math.random() * 90000)}`;
     const zone = window.AFYALISHE_STORE.deliveryZones.find((z) => z.id === this.currentZone);
 
-    const confirmationData = {
+    const orderReceipt = {
       orderNumber,
       paymentMethod,
       date: new Date().toLocaleDateString('en-GB'),
@@ -171,11 +183,9 @@ window.AFYALISHE_CHECKOUT = {
       items: cart,
     };
 
-    // Store completed order receipt
-    localStorage.setItem('afyalishe_latest_order', JSON.stringify(confirmationData));
+    localStorage.setItem('afyalishe_latest_order', JSON.stringify(orderReceipt));
     window.AFYALISHE_STORE.clearCart();
 
-    // Redirect to confirmation screen
     window.location.href = 'checkout.html?confirmed=1';
   }
 };
