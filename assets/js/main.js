@@ -557,17 +557,28 @@ window.AFYALISHE_APP = {
 
       let html = '';
       filtered.forEach((group) => {
-        group.stores.forEach((storeName) => {
+        group.stores.forEach((store) => {
+          const isObj = typeof store === 'object';
+          const storeName = isObj ? store.name : store;
+          const storeType = isObj && store.isCompanyShop ? 'Official Company Shop' : 'Authorized Retailer';
+          const storeDesc = isObj ? store.location : 'Authorized retail distributor of Afyalishe fermented foods and chia range.';
+          const cardBorder = isObj && store.isCompanyShop ? 'border: 2px solid var(--color-primary); background: #FFFFFF;' : '';
+
           html += `
-            <div class="stockist-item-card" data-tilt="true">
-              <span class="category-label" style="margin-bottom: 8px; width: fit-content;">${group.town}</span>
+            <div class="stockist-item-card" data-tilt="true" style="${cardBorder}">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span class="category-label" style="width: fit-content;">${group.town}</span>
+                ${isObj && store.isCompanyShop ? '<span style="font-size: 11px; padding: 2px 8px; border-radius: 4px; background: rgba(88,144,56,0.15); color: var(--color-primary); font-weight: 700;">Physical Shop</span>' : ''}
+              </div>
               <h3 style="font-size: 19px; margin-bottom: 6px;">${storeName}</h3>
-              <p style="font-size: 13.5px; color: var(--color-text-secondary); margin-bottom: 16px;">
-                Authorized retail distributor of Afyalishe fermented foods and chia range.
+              <p style="font-size: 13.5px; color: var(--color-text-secondary); line-height: 1.5; margin-bottom: 16px;">
+                ${storeDesc}
               </p>
               <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between;">
-                <span style="font-size: 12px; color: var(--color-primary); font-weight: 600;">Verified Retailer</span>
-                <a href="https://wa.me/${window.AFYALISHE_STORE.whatsappNumber}?text=${encodeURIComponent(`Hello, I would like to check Afyalishe product availability at ${storeName} in ${group.town}.`)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">Check Stock</a>
+                <span style="font-size: 12px; color: var(--color-primary); font-weight: 600;">${storeType}</span>
+                <a href="https://wa.me/${window.AFYALISHE_STORE.whatsappNumber}?text=${encodeURIComponent(`Hello, I would like to visit or check stock at ${storeName} in ${group.town}.`)}" target="_blank" rel="noopener noreferrer" class="btn ${isObj && store.isCompanyShop ? 'btn-primary' : 'btn-secondary'} btn-sm">
+                  ${isObj && store.isCompanyShop ? 'Visit / Inquire' : 'Check Stock'}
+                </a>
               </div>
             </div>
           `;

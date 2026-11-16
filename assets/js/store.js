@@ -117,7 +117,7 @@ window.AFYALISHE_STORE = {
       flavours: [],
       priceText: 'Price on request / WhatsApp to order',
       priceNumeric: null,
-      image: 'assets/products/chia-oil.jpg',
+      image: 'assets/products/chia-oil.png',
       badge: 'Cold Pressed Virgin',
       description: 'Chia seeds contain the most Omega-3 of any plant source. Chia seed oil offers a range of health and beauty benefits due to its rich content of omega-3 fatty acids (especially heart friendly alpha-linolenic acid or ALA), antioxidants, and essential nutrients.',
       suggestedUse: 'Consume one tablespoon daily',
@@ -262,9 +262,36 @@ window.AFYALISHE_STORE = {
     }
   ],
 
-  // STOCKISTS (Show store name and town only, no PINs or personal phones)
+  // STOCKISTS & COMPANY PHYSICAL SHOPS
   stockists: [
-    { town: 'Nyeri', stores: ['Chieni', 'Chieni Downtown', 'Centralmart', 'Carrymore', 'Siel', 'Dekutes'] },
+    { 
+      town: 'Nyeri', 
+      stores: [
+        {
+          name: 'Afyalishe Physical Shop (Nyeri Uptown)',
+          type: 'Company Flagship Shop',
+          location: 'Nyeri Uptown, near Total petrol station (next to former 019 club)',
+          isCompanyShop: true
+        },
+        'Chieni', 
+        'Chieni Downtown', 
+        'Centralmart', 
+        'Carrymore', 
+        'Siel', 
+        'Dekutes'
+      ] 
+    },
+    {
+      town: 'Nakuru',
+      stores: [
+        {
+          name: 'Afyalishe Physical Shop (Nakuru)',
+          type: 'Company Brand Shop',
+          location: 'Hyrax Business Centre, near downtown Naivas Supermarket',
+          isCompanyShop: true
+        }
+      ]
+    },
     { town: 'Nyahururu', stores: ['JMart Bargain', 'Shirikisho'] },
     { town: 'Nanyuki', stores: ['Chieni Metro', 'Siel', 'Roadmap Group'] },
     { town: 'Naromoru', stores: ['Noble'] },
@@ -347,7 +374,7 @@ window.AFYALISHE_STORE = {
       readTime: '5 min read',
       excerpt: 'Chia oil contains the highest plant-based concentration of ALA omega-3. Learn how a daily spoonful supports cardiovascular flexibility and glowing skin.',
       category: 'Healthy Fats',
-      image: 'assets/products/chia-oil.jpg'
+      image: 'assets/products/chia-oil.png'
     },
     {
       id: 'chia-yoghurt-probiotics-nutrition',

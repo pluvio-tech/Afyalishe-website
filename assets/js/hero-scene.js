@@ -224,7 +224,7 @@
     }
 
     // 1. Chia Oil Dropper Bottle (Center-Left foreground)
-    const chiaOil = createBottleMesh('assets/products/chia-oil.jpg', {
+    const chiaOil = createBottleMesh('assets/products/chia-oil.png', {
       radius: 0.6,
       height: 1.9,
       capColor: 0xd4af37, // Gold dropper
