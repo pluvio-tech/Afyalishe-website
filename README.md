@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Afyalishe Wellness LTD — 3D Motion E-Commerce Redesign
 
 > **Brand Identity:** AFYALISHE WELLNESS LTD, Nyeri, Kenya  
@@ -158,3 +159,7 @@ This repository is ready for instant deployment to Cloudflare Pages:
 - **Email:** info@afyalishewellness.co.ke
 - **WhatsApp:** [+254 759 561657](https://wa.me/254759561657)
 - **Copyright:** &copy; 2026 AFYALISHE WELLNESS LTD. All rights reserved.
+=======
+# Afyalishe-website
+Developing a website for afyalishe wellness
+>>>>>>> 6900a139d5445a26f168692cb2200cdcf5aa9a3a
