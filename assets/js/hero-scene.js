@@ -1,519 +1,940 @@
 /**
- * AFYALISHE WELLNESS - THREE.JS 3D HERO SCENE
- * Floating Afyalishe products, drifting ingredients (chia seeds, hibiscus petals, leaves, granola),
- * logo curved swoosh ring, and smooth cursor-driven parallax tilt.
+ * AFYALISHE WELLNESS - SCROLL-AND-CURSOR PRODUCT POP-UP HERO SCENE
+ * Three.js + GSAP ScrollTrigger (600vh scrub)
+ * Features:
+ * - Central Chia Oil bottle (amber glass, green label, gold dropper) with idle bob and specular sheen
+ * - Concentric green swoosh rings (radii 1.9 & 2.7)
+ * - 10 cut-out product planes with soft halos and contact shadows popping up on scroll with spring overshoot & arc
+ * - Drifting seeds and petals repelled by cursor
+ * - Dynamic caption cross-fades (Hero -> Chia -> Hibiscus -> Yacon -> Granola)
+ * - 4-tick progress rail
+ * - Raycast hover with forward lift, halo glow, and custom tooltip
+ * - Touch & prefers-reduced-motion support
  */
 
 (function () {
-  const config = window.AFYALISHE_MOTION_CONFIG?.heroScene;
-  if (!config || !config.enabled || typeof THREE === 'undefined') {
-    return;
-  }
+  'use strict';
 
-  // Check prefers-reduced-motion
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
+  // 1. PRODUCT METADATA (Exact from Catalogue)
+  const PRODUCTS = [
+    { slug: "chia-oil",        name: "Chia Oil",                     sizes: "100 ml · 60 ml · 30 ml",                 use: "consume one tablespoon daily", group: "hero" },
+    { slug: "chia-seeds",      name: "Chia Seeds",                   sizes: "100 g · 200 g · 500 g",                  use: "soak overnight in water and drink", group: "chia" },
+    { slug: "chia-uji",        name: "Chia Uji",                     sizes: "1 kg · 500 g",                           use: "cook and consume like regular porridge", group: "chia" },
+    { slug: "chia-yoghurt",    name: "Chia Yoghurt",                 sizes: "250 ml · 500 ml · 1 L to 5 L",           use: "smoothies, mix with muesli or granola, porridge", note: "Flavours: Mango, Vanilla, Strawberry, Natural", group: "chia" },
+    { slug: "hibiscus-blend",  name: "Hibiscus Herbal Blend",        sizes: "50 g (25 teabags)",                      use: "add a teabag to a cup of hot water, brew for 5 minutes and enjoy", group: "hibiscus" },
+    { slug: "hibiscus-dried",  name: "Hibiscus Dried Flowers",       sizes: "100 g",                                  use: "as a herbal tea or infused in drinking water", group: "hibiscus" },
+    { slug: "hibiscus-powder", name: "Hibiscus Powder",              sizes: "200 g · 100 g",                          use: "add to ready food, salads or baked goods; mix with water for a hair or face masque", group: "hibiscus" },
+    { slug: "yacon-immune",    name: "Yacon Probiotic Immune Boost", sizes: "250 ml · 500 ml",                        use: "drink directly or mix with smoothies", group: "yacon" },
+    { slug: "yacon-kefir",     name: "Yacon Probiotic Syrup Kefir",  sizes: "500 ml · 1 L",                           use: "drink directly or mix with smoothies", group: "yacon" },
+    { slug: "yacon-inulin",    name: "Yacon Inulin Capsules",        sizes: "40 capsule pack",                        use: "take two capsules daily", group: "yacon" },
+    { slug: "granola",         name: "Granola",                      sizes: "400 g · 200 g · 100 g",                  use: "snack directly or add yoghurt for a healthy delicious breakfast", group: "granola" }
+  ];
+
+  // 2. LAYOUT CONFIGURATION (Section 6)
+  const LAYOUT = {
+    'chia-yoghurt':    { x: -2.7, y:  0.35, z: -1.0, rotZ: -6, height: 1.50, group: 'chia',     popStart: 0.24, popEnd: 0.35 },
+    'hibiscus-blend':  { x:  2.8, y:  0.30, z: -1.0, rotZ:  7, height: 1.30, group: 'hibiscus', popStart: 0.35, popEnd: 0.45 },
+    'chia-seeds':      { x: -1.7, y:  1.10, z: -1.8, rotZ:  5, height: 1.30, group: 'chia',     popStart: 0.10, popEnd: 0.20 },
+    'chia-uji':        { x:  1.7, y:  1.10, z: -1.8, rotZ: -4, height: 1.35, group: 'chia',     popStart: 0.17, popEnd: 0.27 },
+    'granola':         { x: -1.0, y: -1.40, z: -2.0, rotZ:  4, height: 0.80, group: 'granola',  popStart: 0.85, popEnd: 0.95 },
+    'hibiscus-dried':  { x:  2.5, y: -0.95, z: -2.2, rotZ: -5, height: 1.15, group: 'hibiscus', popStart: 0.42, popEnd: 0.52 },
+    'hibiscus-powder': { x: -2.4, y: -0.95, z: -2.2, rotZ:  6, height: 1.30, group: 'hibiscus', popStart: 0.49, popEnd: 0.60 },
+    'yacon-inulin':    { x:  0.9, y: -1.45, z: -2.6, rotZ:  0, height: 0.90, group: 'yacon',    popStart: 0.74, popEnd: 0.85 },
+    'yacon-immune':    { x: -0.8, y:  1.35, z: -3.0, rotZ: -3, height: 1.20, group: 'yacon',    popStart: 0.60, popEnd: 0.70 },
+    'yacon-kefir':     { x:  0.9, y:  1.45, z: -3.2, rotZ:  3, height: 1.50, group: 'yacon',    popStart: 0.67, popEnd: 0.77 }
+  };
+
+  // Group Brand Colors
+  const GROUP_COLORS = {
+    chia:     0x6FB03A, // chia green #6FB03A
+    hibiscus: 0xE0559B, // hibiscus pink #E0559B
+    yacon:    0xC47A3A, // yacon amber-brown #C47A3A
+    granola:  0xD4A359  // granola clay #D4A359
+  };
+
+  // Spring Overshoot Helper (equivalent to back.out(1.9))
+  function easeOutBack(t, s = 1.9) {
+    t = Math.max(0, Math.min(1, t));
+    t = t - 1;
+    return t * t * ((s + 1) * t + s) + 1;
   }
 
   function initHeroScene() {
     const container = document.getElementById('hero-3d-scene-container');
-    const fallbackVisual = document.querySelector('.hero-fallback-visual');
-    if (!container) return;
+    if (!container || typeof THREE === 'undefined') return;
 
-    // Dimensions
-    let width = container.clientWidth || 600;
-    let height = container.clientHeight || 560;
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Viewport dimensions
+    let width = container.clientWidth || window.innerWidth;
+    let height = container.clientHeight || window.innerHeight;
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    // Warm Cream background matching page
-    scene.background = new THREE.Color(0xF0EBE9);
-    // Subtle scene fog for depth-of-field effect
-    scene.fog = new THREE.FogExp2(0xF0EBE9, 0.035);
+    scene.background = new THREE.Color(0xEFE9E6); // Brand warm off-white #EFE9E6
 
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0, 8.5);
+    const camera = new THREE.PerspectiveCamera(32, width / height, 0.1, 100);
+    camera.position.set(0, 0, 7.0);
 
     let renderer;
     try {
       renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha: true,
-        powerPreference: 'high-performance',
+        powerPreference: 'high-performance'
       });
     } catch (e) {
-      console.warn('WebGL not supported, keeping static hero fallback', e);
+      console.warn('WebGL failed, maintaining static fallback', e);
       return;
     }
 
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, config.maxPixelRatio));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
+    renderer.outputEncoding = THREE.sRGBEncoding;
 
-    // Insert canvas into container
     renderer.domElement.className = 'hero-3d-canvas';
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    // Fade out static fallback visual once WebGL is ready
-    if (fallbackVisual) {
-      setTimeout(() => {
-        fallbackVisual.classList.add('hidden');
-      }, 300);
-    }
-
     // 2. Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xfff8f2, 1.1);
+    const ambientLight = new THREE.AmbientLight(0xfff8f2, 1.15);
     scene.add(ambientLight);
 
-    // Key Light (Sunlight from upper left)
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
-    keyLight.position.set(5, 8, 6);
-    keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 1024;
-    keyLight.shadow.mapSize.height = 1024;
-    keyLight.shadow.camera.near = 0.5;
-    keyLight.shadow.camera.far = 25;
-    scene.add(keyLight);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    sunLight.position.set(5, 8, 6);
+    scene.add(sunLight);
 
-    // Fresh Lime Rim Light (Brand glow #7AC143)
-    const limeRimLight = new THREE.DirectionalLight(0x7AC143, 1.0);
+    const limeRimLight = new THREE.DirectionalLight(0x6FB03A, 0.9);
     limeRimLight.position.set(-6, -2, -2);
     scene.add(limeRimLight);
 
-    // Warm Terracotta Bounce Light (#BE7133)
-    const terracottaBounce = new THREE.PointLight(0xBE7133, 0.8, 15);
+    const terracottaBounce = new THREE.PointLight(0xC47A3A, 0.8, 15);
     terracottaBounce.position.set(0, -5, 2);
     scene.add(terracottaBounce);
 
-    // Soft Green Point Light for core depth
-    const greenGlowLight = new THREE.PointLight(0x589038, 0.9, 12);
-    greenGlowLight.position.set(0, 0, -1);
-    scene.add(greenGlowLight);
+    const centerGlow = new THREE.PointLight(0x6FB03A, 0.8, 12);
+    centerGlow.position.set(0, 0, -1);
+    scene.add(centerGlow);
 
-    // 3. Hierarchical Groups for Parallax
+    // 3. Hierarchical Groups
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
+
+    const ringsGroup = new THREE.Group();
+    mainGroup.add(ringsGroup);
 
     const productsGroup = new THREE.Group();
     mainGroup.add(productsGroup);
 
-    const backgroundGroup = new THREE.Group();
-    mainGroup.add(backgroundGroup);
+    const particlesGroup = new THREE.Group();
+    mainGroup.add(particlesGroup);
 
-    const ingredientsGroup = new THREE.Group();
-    mainGroup.add(ingredientsGroup);
+    const burstGroup = new THREE.Group();
+    mainGroup.add(burstGroup);
 
     // Texture Loader
     const textureLoader = new THREE.TextureLoader();
 
-    // 4. Background: Afyalishe Logo Curved Green Swoosh Ring
-    const swooshCurve = new THREE.EllipseCurve(
-      0, 0,             // ax, aY
-      3.2, 2.2,         // xRadius, yRadius
-      0, 2 * Math.PI,   // aStartAngle, aEndAngle
-      false,            // aClockwise
-      0                 // aRotation
-    );
-    const swooshPoints = swooshCurve.getPoints(64);
-    const swooshGeometry = new THREE.TorusGeometry(3.0, 0.08, 16, 100);
-    const swooshMaterial = new THREE.MeshStandardMaterial({
-      color: 0x589038,
-      roughness: 0.35,
+    // Procedural Halo & Shadow textures
+    function createRadialTexture(colorStr, alphaCenter) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 128;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+      const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      grad.addColorStop(0, colorStr);
+      grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 128, 128);
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.encoding = THREE.sRGBEncoding;
+      return tex;
+    }
+
+    const haloTexture = createRadialTexture('rgba(255, 255, 255, 1.0)', 1.0);
+    const shadowTexture = createRadialTexture('rgba(30, 25, 20, 0.45)', 0.45);
+
+    // 4. Concentric Green Torus Rings (radii 1.9 & 2.7)
+    const ring1Geo = new THREE.TorusGeometry(1.9, 0.045, 16, 100);
+    const ring1Mat = new THREE.MeshStandardMaterial({
+      color: 0x6FB03A,
+      roughness: 0.3,
       metalness: 0.25,
-      emissive: 0x7AC143,
+      emissive: 0x6FB03A,
       emissiveIntensity: 0.15,
+      transparent: true,
+      opacity: 0.95
     });
-    const swooshRing = new THREE.Mesh(swooshGeometry, swooshMaterial);
-    swooshRing.position.set(0, 0.1, -1.5);
-    swooshRing.rotation.set(0.35, -0.2, 0.6);
-    swooshRing.scale.set(1.1, 0.85, 1);
-    backgroundGroup.add(swooshRing);
+    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
+    ring1.position.set(0, 0, -1.4);
+    ring1.rotation.set(0.25, -0.2, 0.4);
+    ringsGroup.add(ring1);
 
-    // Second inner thin lime swoosh ring
-    const innerSwooshGeo = new THREE.TorusGeometry(2.3, 0.04, 16, 80);
-    const innerSwooshMat = new THREE.MeshStandardMaterial({
-      color: 0x7AC143,
-      roughness: 0.2,
-      metalness: 0.4,
+    const ring2Geo = new THREE.TorusGeometry(2.7, 0.055, 16, 120);
+    const ring2Mat = new THREE.MeshStandardMaterial({
+      color: 0x2E7D32,
+      roughness: 0.35,
+      metalness: 0.2,
+      emissive: 0x6FB03A,
+      emissiveIntensity: 0.12,
+      transparent: true,
+      opacity: 0.9
     });
-    const innerSwoosh = new THREE.Mesh(innerSwooshGeo, innerSwooshMat);
-    innerSwoosh.position.set(0, 0.1, -1.4);
-    innerSwoosh.rotation.set(-0.4, 0.3, -0.4);
-    backgroundGroup.add(innerSwoosh);
+    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
+    ring2.position.set(0, 0, -1.45);
+    ring2.rotation.set(-0.35, 0.3, -0.3);
+    ringsGroup.add(ring2);
 
-    // 5. Build 3D Product Meshes with real textures
-    // Helper to create product cylinders/boxes
-    function createBottleMesh(texturePath, options = {}) {
-      const group = new THREE.Group();
-      const radius = options.radius || 0.65;
-      const height = options.height || 2.1;
-      const bodyColor = options.bodyColor || 0xffffff;
+    // 5. Hero Chia Oil Bottle (center (0,0,0), height 2.3)
+    const heroBottleGroup = new THREE.Group();
+    heroBottleGroup.position.set(0, 0, 0);
+    mainGroup.add(heroBottleGroup);
 
-      // Bottle body
-      const bodyGeo = new THREE.CylinderGeometry(radius, radius * 0.95, height, 32);
-      let bodyMat;
+    // Transparent cut-out texture plane for Chia Oil
+    const chiaOilTex = textureLoader.load('public/products/chia-oil.webp', undefined, undefined, () => {
+      // Fallback path
+      return textureLoader.load('assets/products/chia-oil.webp');
+    });
+    chiaOilTex.encoding = THREE.sRGBEncoding;
+    chiaOilTex.generateMipmaps = true;
+    chiaOilTex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8);
 
-      if (texturePath) {
-        const tex = textureLoader.load(texturePath);
-        tex.wrapS = THREE.RepeatWrapping;
-        tex.repeat.set(1, 1);
-        bodyMat = new THREE.MeshStandardMaterial({
-          map: tex,
-          roughness: 0.3,
-          metalness: 0.1,
-          color: 0xffffff,
-        });
-      } else {
-        bodyMat = new THREE.MeshStandardMaterial({
-          color: bodyColor,
-          roughness: 0.25,
-          metalness: 0.1,
-        });
+    const bottleAspect = 0.85;
+    const bottleHeight = 2.3;
+    const bottleWidth = bottleAspect * bottleHeight;
+
+    const bottleGeo = new THREE.PlaneGeometry(bottleWidth, bottleHeight);
+    const bottleMat = new THREE.MeshStandardMaterial({
+      map: chiaOilTex,
+      transparent: true,
+      alphaTest: 0.02,
+      roughness: 0.25,
+      metalness: 0.15,
+      side: THREE.DoubleSide
+    });
+    const bottleMesh = new THREE.Mesh(bottleGeo, bottleMat);
+    heroBottleGroup.add(bottleMesh);
+
+    // Specular sheen highlight mesh moving with pointer
+    const sheenGeo = new THREE.PlaneGeometry(bottleWidth * 0.95, bottleHeight * 0.95);
+    const sheenMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.18,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+      depthWrite: false
+    });
+    const sheenMesh = new THREE.Mesh(sheenGeo, sheenMat);
+    sheenMesh.position.set(0, 0, 0.01);
+    heroBottleGroup.add(sheenMesh);
+
+    // Contact shadow under hero bottle
+    const heroShadowGeo = new THREE.PlaneGeometry(1.4, 0.45);
+    const heroShadowMat = new THREE.MeshBasicMaterial({
+      map: shadowTexture,
+      transparent: true,
+      opacity: 0.35,
+      depthWrite: false
+    });
+    const heroShadow = new THREE.Mesh(heroShadowGeo, heroShadowMat);
+    heroShadow.position.set(0, -1.18, -0.05);
+    heroBottleGroup.add(heroShadow);
+
+    // 6. Build 10 Transparent Cut-out / Sticker Product Planes
+    const productPlanes = [];
+    const interactiveMeshes = [];
+
+    Object.keys(LAYOUT).forEach((slug) => {
+      const cfg = LAYOUT[slug];
+      const prodMeta = PRODUCTS.find(p => p.slug === slug) || { name: slug, sizes: '', use: '', group: cfg.group };
+
+      const cardGroup = new THREE.Group();
+      cardGroup.position.set(cfg.x * 0.15, cfg.y * 0.15, cfg.z - 0.6);
+      cardGroup.scale.set(0.001, 0.001, 0.001);
+      cardGroup.rotation.z = (cfg.rotZ + (cfg.rotZ >= 0 ? 25 : -25)) * (Math.PI / 180);
+
+      // Texture loading with fallback
+      const texPath = `public/products/${slug}.webp`;
+      const tex = textureLoader.load(texPath, undefined, undefined, () => {
+        return textureLoader.load(`assets/products/${slug}.webp`);
+      });
+      tex.encoding = THREE.sRGBEncoding;
+      tex.generateMipmaps = true;
+      tex.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy(), 8);
+
+      // Depth treatment for z below -2
+      const isBackLayer = cfg.z < -2.0;
+      if (isBackLayer) {
+        tex.mipMapBias = Math.abs(cfg.z) * 0.6;
       }
 
-      const body = new THREE.Mesh(bodyGeo, bodyMat);
-      body.castShadow = true;
-      body.receiveShadow = true;
-      group.add(body);
+      const pHeight = cfg.height;
+      const pWidth = pHeight * 0.88; // Default aspect ratio
 
-      // Bottle neck & cap
-      const neckGeo = new THREE.CylinderGeometry(radius * 0.35, radius * 0.45, 0.4, 24);
-      const neckMat = new THREE.MeshStandardMaterial({
-        color: options.capColor || 0xd4af37, // gold/cap
-        roughness: 0.2,
-        metalness: 0.6,
-      });
-      const neck = new THREE.Mesh(neckGeo, neckMat);
-      neck.position.y = height / 2 + 0.18;
-      neck.castShadow = true;
-      group.add(neck);
-
-      // Cap / bulb top
-      const capGeo = options.isDropper
-        ? new THREE.SphereGeometry(radius * 0.28, 16, 16)
-        : new THREE.CylinderGeometry(radius * 0.38, radius * 0.38, 0.3, 24);
-      const capMat = new THREE.MeshStandardMaterial({
-        color: options.isDropper ? 0xffffff : (options.capColor || 0x589038),
-        roughness: 0.3,
-      });
-      const cap = new THREE.Mesh(capGeo, capMat);
-      cap.position.y = height / 2 + 0.45;
-      group.add(cap);
-
-      return group;
-    }
-
-    // Helper for Tea Box Mesh
-    function createBoxMesh(texturePath, width = 1.3, height = 1.7, depth = 0.9) {
-      const group = new THREE.Group();
-      const geo = new THREE.BoxGeometry(width, height, depth);
-      const tex = textureLoader.load(texturePath);
-      const mat = new THREE.MeshStandardMaterial({
+      const planeGeo = new THREE.PlaneGeometry(pWidth, pHeight);
+      const planeMat = new THREE.MeshStandardMaterial({
         map: tex,
-        roughness: 0.4,
+        transparent: true,
+        alphaTest: 0.02,
+        roughness: isBackLayer ? 0.45 : 0.3,
         metalness: 0.05,
+        opacity: isBackLayer ? 0.94 : 1.0,
+        side: THREE.DoubleSide
       });
-      const box = new THREE.Mesh(geo, mat);
-      box.castShadow = true;
-      box.receiveShadow = true;
-      group.add(box);
-      return group;
-    }
 
-    // 1. Chia Oil Dropper Bottle (Center-Left foreground)
-    const chiaOil = createBottleMesh('assets/products/chia-oil.png', {
-      radius: 0.6,
-      height: 1.9,
-      capColor: 0xd4af37, // Gold dropper
-      isDropper: true,
+      const mesh = new THREE.Mesh(planeGeo, planeMat);
+      mesh.userData = {
+        slug,
+        meta: prodMeta,
+        config: cfg,
+        group: cardGroup,
+        baseZ: cfg.z,
+        baseScale: 1.0,
+        isHovered: false
+      };
+      cardGroup.add(mesh);
+      interactiveMeshes.push(mesh);
+
+      // Soft Halo in group color at 25% alpha
+      const haloColor = GROUP_COLORS[cfg.group] || 0x6FB03A;
+      const haloGeo = new THREE.PlaneGeometry(pWidth * 1.5, pHeight * 1.5);
+      const haloMat = new THREE.MeshBasicMaterial({
+        map: haloTexture,
+        color: haloColor,
+        transparent: true,
+        opacity: 0.25,
+        depthWrite: false,
+        blending: THREE.NormalBlending
+      });
+      const halo = new THREE.Mesh(haloGeo, haloMat);
+      halo.position.set(0, 0, -0.05);
+      cardGroup.add(halo);
+
+      // Faint contact shadow blob
+      const shadowGeo = new THREE.PlaneGeometry(pWidth * 0.9, 0.35);
+      const shadowMat = new THREE.MeshBasicMaterial({
+        map: shadowTexture,
+        transparent: true,
+        opacity: 0.28,
+        depthWrite: false
+      });
+      const shadow = new THREE.Mesh(shadowGeo, shadowMat);
+      shadow.position.set(0, -pHeight * 0.52, -0.02);
+      cardGroup.add(shadow);
+
+      productsGroup.add(cardGroup);
+
+      productPlanes.push({
+        slug,
+        meta: prodMeta,
+        config: cfg,
+        group: cardGroup,
+        mesh,
+        halo,
+        shadow,
+        material: planeMat,
+        hasBurst: false,
+        currentParallax: { x: 0, y: 0 }
+      });
     });
-    chiaOil.position.set(-1.4, -0.2, 0.8);
-    chiaOil.rotation.set(0.12, 0.35, -0.15);
-    productsGroup.add(chiaOil);
 
-    // 2. Chia Yoghurt Tub (Center foreground, prominent)
-    const chiaYoghurt = createBottleMesh('assets/products/chia-yoghurt.jpg', {
-      radius: 0.85,
-      height: 2.2,
-      capColor: 0x7AC143, // Fresh lime cap
-      isDropper: false,
-    });
-    chiaYoghurt.position.set(0.7, 0.3, 0.5);
-    chiaYoghurt.rotation.set(-0.15, -0.4, 0.1);
-    productsGroup.add(chiaYoghurt);
-
-    // 3. Yacon Kefir Bottle (Back-Left floating)
-    const yaconKefir = createBottleMesh('assets/products/yacon-probiotic-syrup-kefir.jpg', {
-      radius: 0.55,
-      height: 2.3,
-      capColor: 0x3f6828,
-    });
-    yaconKefir.position.set(-2.2, 1.2, -0.6);
-    yaconKefir.rotation.set(-0.25, 0.5, -0.2);
-    productsGroup.add(yaconKefir);
-
-    // 4. Hibiscus Herbal Tea Box (Right floating)
-    const hibiscusBox = createBoxMesh('assets/products/hibiscus-herbal-blend.jpg', 1.35, 1.75, 0.85);
-    hibiscusBox.position.set(2.4, -0.4, -0.2);
-    hibiscusBox.rotation.set(0.2, -0.45, 0.18);
-    productsGroup.add(hibiscusBox);
-
-    // 6. Drifting 3D Ingredients
+    // 7. Drifting Particles: Chia Seeds (black & cream) + Petals (pink & green)
     const particles = [];
+    const seedGeo = new THREE.SphereGeometry(0.055, 8, 8);
+    seedGeo.scale(1, 1.45, 0.7);
 
-    // (A) Chia Seeds: glossy dark spheroids
-    const chiaGeo = new THREE.SphereGeometry(0.065, 8, 8);
-    chiaGeo.scale(1, 1.45, 0.7);
-    const chiaMat = new THREE.MeshStandardMaterial({
-      color: 0x222222,
-      roughness: 0.15,
-      metalness: 0.4,
+    const blackSeedMat = new THREE.MeshStandardMaterial({
+      color: 0x1F1F1F,
+      roughness: 0.2,
+      metalness: 0.3
+    });
+    const creamSeedMat = new THREE.MeshStandardMaterial({
+      color: 0xE8DFC8,
+      roughness: 0.35,
+      metalness: 0.1
     });
 
-    for (let i = 0; i < config.particleCount.chiaSeeds; i++) {
-      const mesh = new THREE.Mesh(chiaGeo, chiaMat);
-      mesh.position.set(
+    // 400 Seeds
+    const seedCount = width < 820 ? 120 : 380;
+    for (let i = 0; i < seedCount; i++) {
+      const mat = (i % 6 === 0) ? creamSeedMat : blackSeedMat;
+      const mesh = new THREE.Mesh(seedGeo, mat);
+      const initialPos = new THREE.Vector3(
+        (Math.random() - 0.5) * 11,
         (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 6,
-        (Math.random() - 0.5) * 5 + 0.5
+        (Math.random() - 0.5) * 6 - 0.5
       );
+      mesh.position.copy(initialPos);
       mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
-      ingredientsGroup.add(mesh);
+      particlesGroup.add(mesh);
+
       particles.push({
         mesh,
-        rotSpeed: { x: (Math.random() - 0.5) * 0.03, y: (Math.random() - 0.5) * 0.03 },
-        floatSpeed: 0.008 + Math.random() * 0.012,
-        initialY: mesh.position.y,
-        rangeY: 0.8 + Math.random() * 0.6,
+        basePos: initialPos.clone(),
+        velocity: new THREE.Vector3(0, 0, 0),
+        rotSpeed: { x: (Math.random() - 0.5) * 0.02, y: (Math.random() - 0.5) * 0.02 },
+        floatSpeed: 0.006 + Math.random() * 0.01,
+        phase: Math.random() * Math.PI * 2,
+        isPetal: false
       });
     }
 
-    // (B) Hibiscus Petals: ruby curved planes
+    // 60 Petals (pink & green)
     const petalShape = new THREE.Shape();
     petalShape.moveTo(0, 0);
     petalShape.quadraticCurveTo(0.18, 0.25, 0.12, 0.5);
     petalShape.quadraticCurveTo(0, 0.7, -0.12, 0.5);
     petalShape.quadraticCurveTo(-0.18, 0.25, 0, 0);
     const petalGeo = new THREE.ShapeGeometry(petalShape);
-    const petalMat = new THREE.MeshStandardMaterial({
-      color: 0x981A3C, // Deep roselle ruby
+
+    const pinkPetalMat = new THREE.MeshStandardMaterial({
+      color: 0xE0559B, // hibiscus pink #E0559B
       roughness: 0.4,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0.92,
+      opacity: 0.92
     });
-
-    for (let i = 0; i < config.particleCount.hibiscusPetals; i++) {
-      const mesh = new THREE.Mesh(petalGeo, petalMat);
-      mesh.position.set(
-        (Math.random() - 0.5) * 7.5,
-        (Math.random() - 0.5) * 5.5,
-        (Math.random() - 0.5) * 4
-      );
-      const scale = 0.7 + Math.random() * 0.6;
-      mesh.scale.set(scale, scale, scale);
-      mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      ingredientsGroup.add(mesh);
-      particles.push({
-        mesh,
-        rotSpeed: { x: (Math.random() - 0.5) * 0.02, y: (Math.random() - 0.5) * 0.02, z: (Math.random() - 0.5) * 0.02 },
-        floatSpeed: 0.006 + Math.random() * 0.01,
-        initialY: mesh.position.y,
-        rangeY: 1.2,
-      });
-    }
-
-    // (C) Green Leaves: fresh lime & leaf green curved leaves
-    const leafMat = new THREE.MeshStandardMaterial({
-      color: 0x7AC143,
+    const greenPetalMat = new THREE.MeshStandardMaterial({
+      color: 0x6FB03A, // leaf green #6FB03A
       roughness: 0.35,
       side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.9
     });
-    for (let i = 0; i < config.particleCount.greenLeaves; i++) {
-      const mesh = new THREE.Mesh(petalGeo, leafMat);
-      mesh.position.set(
-        (Math.random() - 0.5) * 8,
-        (Math.random() - 0.5) * 6,
-        (Math.random() - 0.5) * 4.5
+
+    const petalCount = width < 820 ? 24 : 65;
+    for (let i = 0; i < petalCount; i++) {
+      const mat = (i % 3 === 0) ? greenPetalMat : pinkPetalMat;
+      const mesh = new THREE.Mesh(petalGeo, mat);
+      const scale = 0.55 + Math.random() * 0.5;
+      mesh.scale.set(scale, scale, scale);
+      const initialPos = new THREE.Vector3(
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 7.5,
+        (Math.random() - 0.5) * 5
       );
-      const s = 0.6 + Math.random() * 0.5;
-      mesh.scale.set(s, s * 1.2, s);
+      mesh.position.copy(initialPos);
       mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      ingredientsGroup.add(mesh);
-      particles.push({
-        mesh,
-        rotSpeed: { x: 0.015, y: 0.01, z: 0.008 },
-        floatSpeed: 0.007 + Math.random() * 0.01,
-        initialY: mesh.position.y,
-        rangeY: 1.0,
-      });
-    }
+      particlesGroup.add(mesh);
 
-    // (D) Granola Pieces: textured golden clusters
-    const granolaGeo = new THREE.DodecahedronGeometry(0.12, 1);
-    const granolaMat = new THREE.MeshStandardMaterial({
-      color: 0xD4A359,
-      roughness: 0.7,
-      metalness: 0.05,
-    });
-    for (let i = 0; i < config.particleCount.granolaPieces; i++) {
-      const mesh = new THREE.Mesh(granolaGeo, granolaMat);
-      mesh.position.set(
-        (Math.random() - 0.5) * 7,
-        (Math.random() - 0.5) * 5,
-        (Math.random() - 0.5) * 4
-      );
-      mesh.scale.set(
-        0.8 + Math.random() * 0.5,
-        0.6 + Math.random() * 0.5,
-        0.7 + Math.random() * 0.5
-      );
-      ingredientsGroup.add(mesh);
       particles.push({
         mesh,
-        rotSpeed: { x: 0.01, y: 0.015 },
+        basePos: initialPos.clone(),
+        velocity: new THREE.Vector3(0, 0, 0),
+        rotSpeed: { x: (Math.random() - 0.5) * 0.02, y: (Math.random() - 0.5) * 0.02, z: (Math.random() - 0.5) * 0.015 },
         floatSpeed: 0.005 + Math.random() * 0.008,
-        initialY: mesh.position.y,
-        rangeY: 0.7,
+        phase: Math.random() * Math.PI * 2,
+        isPetal: true
       });
     }
 
-    // 7. Cursor Interaction & Spring Damping
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetRotationX = 0;
-    let targetRotationY = 0;
-    let isVisible = true;
+    // 8. One-Shot Burst Particle System
+    const activeBursts = [];
+    function emitPopBurst(pos) {
+      const burstObj = new THREE.Group();
+      burstObj.position.copy(pos);
+      burstGroup.add(burstObj);
 
-    // Mouse movement listener across entire window
-    window.addEventListener('mousemove', (e) => {
-      // Normalized coordinates: -1 to 1
-      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+      const items = [];
+      // 14 chia seeds
+      for (let i = 0; i < 14; i++) {
+        const sm = new THREE.Mesh(seedGeo, blackSeedMat);
+        sm.scale.set(0.7, 0.7, 0.7);
+        burstObj.add(sm);
+        const theta = Math.random() * Math.PI * 2;
+        const phi = (Math.random() - 0.5) * Math.PI;
+        const speed = 1.2 + Math.random() * 1.8;
+        items.push({
+          mesh: sm,
+          vx: Math.cos(theta) * Math.cos(phi) * speed,
+          vy: Math.sin(phi) * speed,
+          vz: Math.sin(theta) * Math.cos(phi) * speed
+        });
+      }
+      // 6 petals
+      for (let i = 0; i < 6; i++) {
+        const pm = new THREE.Mesh(petalGeo, pinkPetalMat);
+        pm.scale.set(0.4, 0.4, 0.4);
+        burstObj.add(pm);
+        const theta = Math.random() * Math.PI * 2;
+        const speed = 0.9 + Math.random() * 1.4;
+        items.push({
+          mesh: pm,
+          vx: Math.cos(theta) * speed,
+          vy: Math.sin(theta) * speed + 0.3,
+          vz: (Math.random() - 0.5) * 0.8
+        });
+      }
 
-      const maxRad = THREE.MathUtils.degToRad(config.maxTiltAngle);
-      targetRotationY = mouseX * maxRad;
-      targetRotationX = -mouseY * maxRad;
-    });
+      // Soft ring ripple expanding from 0.2 to 1.6
+      const rippleGeo = new THREE.RingGeometry(0.18, 0.22, 32);
+      const rippleMat = new THREE.MeshBasicMaterial({
+        color: 0x6FB03A,
+        transparent: true,
+        opacity: 0.7,
+        side: THREE.DoubleSide
+      });
+      const ripple = new THREE.Mesh(rippleGeo, rippleMat);
+      burstObj.add(ripple);
 
-    // Touch tilt (for mobile orientation if supported)
-    if (window.DeviceOrientationEvent && 'ontouchstart' in window) {
-      window.addEventListener('deviceorientation', (e) => {
-        if (e.gamma !== null && e.beta !== null) {
-          const normGamma = Math.min(Math.max(e.gamma / 30, -1), 1);
-          const normBeta = Math.min(Math.max((e.beta - 45) / 30, -1), 1);
-          const maxRad = THREE.MathUtils.degToRad(8);
-          targetRotationY = normGamma * maxRad;
-          targetRotationX = -normBeta * maxRad;
-        }
+      activeBursts.push({
+        group: burstObj,
+        items,
+        ripple,
+        startTime: performance.now(),
+        duration: 800 // 0.8s
       });
     }
 
-    // Drag rotation on the 3D canvas
-    let isDragging = false;
-    let prevPointerX = 0;
-    let prevPointerY = 0;
+    // 9. Pointer & Cursor State
+    const pointer = { x: 0, y: 0 };
+    const smoothPointer = { x: 0, y: 0 };
+    let mouseWorldPos = new THREE.Vector3(0, 0, 0);
+    const raycaster = new THREE.Raycaster();
+    const mouseCoord = new THREE.Vector2(-999, -999);
+    let hoveredMesh = null;
 
-    container.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      prevPointerX = e.clientX;
-      prevPointerY = e.clientY;
-    });
-
-    window.addEventListener('mouseup', () => {
-      isDragging = false;
-    });
+    // Tooltip Element
+    let tooltipEl = document.getElementById('hero-product-tooltip');
+    if (!tooltipEl) {
+      tooltipEl = document.createElement('div');
+      tooltipEl.id = 'hero-product-tooltip';
+      tooltipEl.className = 'hero-product-tooltip';
+      document.body.appendChild(tooltipEl);
+    }
 
     window.addEventListener('mousemove', (e) => {
-      if (isDragging) {
-        const deltaX = e.clientX - prevPointerX;
-        const deltaY = e.clientY - prevPointerY;
-        prevPointerX = e.clientX;
-        prevPointerY = e.clientY;
+      pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+      pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-        productsGroup.rotation.y += deltaX * 0.008;
-        productsGroup.rotation.x += deltaY * 0.008;
+      mouseCoord.x = pointer.x;
+      mouseCoord.y = pointer.y;
+
+      // Position tooltip near cursor
+      if (tooltipEl.classList.contains('visible')) {
+        const offset = 18;
+        let left = e.clientX + offset;
+        let top = e.clientY + offset;
+        if (left + 280 > window.innerWidth) left = e.clientX - 290;
+        if (top + 160 > window.innerHeight) top = e.clientY - 170;
+        tooltipEl.style.left = `${left}px`;
+        tooltipEl.style.top = `${top}px`;
       }
     });
 
-    // Pause rendering when scrolled offscreen for 60fps performance
-    if (config.pauseOffscreen && 'IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        isVisible = entries[0].isIntersecting;
-      }, { threshold: 0.1 });
-      observer.observe(container);
+    // Tap/Click on product
+    window.addEventListener('click', () => {
+      if (hoveredMesh && hoveredMesh.userData) {
+        const slug = hoveredMesh.userData.slug;
+        window.location.href = `product.html?id=${slug}`;
+      }
+    });
+
+    // Touch support (drag tilt)
+    let isTouching = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isTouching = true;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    });
+    window.addEventListener('touchmove', (e) => {
+      if (isTouching && e.touches.length === 1) {
+        const dx = (e.touches[0].clientX - touchStartX) / (window.innerWidth * 0.5);
+        const dy = (e.touches[0].clientY - touchStartY) / (window.innerHeight * 0.5);
+        pointer.x = Math.max(-1, Math.min(1, dx));
+        pointer.y = Math.max(-1, Math.min(1, -dy));
+      }
+    });
+    window.addEventListener('touchend', () => {
+      isTouching = false;
+    });
+
+    // 10. Scroll Integration via GSAP ScrollTrigger
+    let scrollProgress = isReducedMotion ? 1.0 : 0.0;
+    let prevScrollProgress = 0.0;
+    let scrollVelocity = 0.0;
+
+    const scrollContainer = document.getElementById('hero-scroll-container');
+    const captionBlock = document.getElementById('hero-caption-block');
+    const railBar = document.getElementById('hero-rail-bar');
+    const railTicks = document.querySelectorAll('.hero-rail-tick');
+    const finaleCtas = document.getElementById('hero-finale-ctas');
+
+    function updateCaptions(p) {
+      if (!captionBlock) return;
+
+      let section = 'hero';
+      if (p >= 0.10 && p < 0.35) section = 'chia';
+      else if (p >= 0.35 && p < 0.60) section = 'hibiscus';
+      else if (p >= 0.60 && p < 0.85) section = 'yacon';
+      else if (p >= 0.85) section = 'granola';
+
+      if (captionBlock.dataset.currentSection !== section) {
+        captionBlock.dataset.currentSection = section;
+
+        if (section === 'hero') {
+          captionBlock.innerHTML = `
+            <span class="hero-caption-tagline">"Food as medicine"</span>
+            <h2 class="hero-caption-title">Chia Oil Superfood Elixir</h2>
+            <p class="hero-caption-body">We're all about natural innovative food products that promote vitality and wellbeing. All our products are free from artificial additives.</p>
+            <div style="font-size: 13px; color: var(--color-primary); font-weight: 600;">Scroll to unpack the harvest &darr;</div>
+          `;
+        } else if (section === 'chia') {
+          captionBlock.innerHTML = `
+            <span class="hero-caption-tagline">Mount Kenya Harvest</span>
+            <h2 class="hero-caption-title">Chia Range</h2>
+            <p class="hero-caption-body">Plant-based Omega-3, calcium, protein, and soluble dietary fiber for heart and gut vitality.</p>
+            <div class="hero-caption-products">
+              <div class="hero-caption-item"><strong>Chia Seeds</strong> <span>100g · 200g · 500g</span></div>
+              <div class="hero-caption-item"><strong>Chia Uji Porridge</strong> <span>1kg · 500g</span></div>
+              <div class="hero-caption-item"><strong>Chia Yoghurt</strong> <span>250ml to 5L</span></div>
+            </div>
+          `;
+        } else if (section === 'hibiscus') {
+          captionBlock.innerHTML = `
+            <span class="hero-caption-tagline">Natural Vitality</span>
+            <h2 class="hero-caption-title">Hibiscus &amp; Herbal Teas</h2>
+            <p class="hero-caption-body">Sun-dried ruby roselle calyxes rich in anthocyanin antioxidants, blood pressure support, and soothing aromatics.</p>
+            <div class="hero-caption-products">
+              <div class="hero-caption-item"><strong>Hibiscus Herbal Blend</strong> <span>50g (25 bags)</span></div>
+              <div class="hero-caption-item"><strong>Hibiscus Dried Flowers</strong> <span>100g</span></div>
+              <div class="hero-caption-item"><strong>Hibiscus Powder</strong> <span>200g · 100g</span></div>
+            </div>
+          `;
+        } else if (section === 'yacon') {
+          captionBlock.innerHTML = `
+            <span class="hero-caption-tagline">Fermented Probiotics</span>
+            <h2 class="hero-caption-title">Yacon Probiotics</h2>
+            <p class="hero-caption-body">Living microflora fermented with Kenyan yacon roots, naturally rich in prebiotic FOS to nourish gut microbiota.</p>
+            <div class="hero-caption-products">
+              <div class="hero-caption-item"><strong>Yacon Immune Boost</strong> <span>250ml · 500ml</span></div>
+              <div class="hero-caption-item"><strong>Yacon Syrup Kefir</strong> <span>500ml · 1L</span></div>
+              <div class="hero-caption-item"><strong>Yacon Inulin Capsules</strong> <span>40 capsules</span></div>
+            </div>
+          `;
+        } else if (section === 'granola') {
+          captionBlock.innerHTML = `
+            <span class="hero-caption-tagline">Whole Food Snacks</span>
+            <h2 class="hero-caption-title">Complete 11-Product Ring</h2>
+            <p class="hero-caption-body">Stone-milled, slow-fermented, and cold-pressed without a single artificial additive.</p>
+            <div class="hero-caption-products">
+              <div class="hero-caption-item"><strong>Plantain &amp; Pumpkin Granola</strong> <span>400g · 200g · 100g</span></div>
+            </div>
+          `;
+        }
+      }
+
+      // Update 4-tick progress rail
+      if (railBar) {
+        railBar.style.width = `${Math.min(100, p * 100)}%`;
+      }
+      railTicks.forEach(tick => {
+        const group = tick.dataset.group;
+        if (group === section) {
+          tick.classList.add('active');
+        } else {
+          tick.classList.remove('active');
+        }
+      });
+
+      // Show finale CTAs at 85-100%
+      if (finaleCtas) {
+        if (p >= 0.85) {
+          finaleCtas.classList.add('visible');
+        } else {
+          finaleCtas.classList.remove('visible');
+        }
+      }
     }
 
-    // Handle Resize
-    function onResize() {
-      if (!container) return;
-      width = container.clientWidth;
-      height = container.clientHeight;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    }
-    window.addEventListener('resize', onResize);
+    if (window.gsap && window.ScrollTrigger && scrollContainer && !isReducedMotion) {
+      window.gsap.registerPlugin(window.ScrollTrigger);
 
-    // 8. Animation Render Loop
-    let clock = new THREE.Clock();
+      window.ScrollTrigger.create({
+        trigger: scrollContainer,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.6,
+        onUpdate: (self) => {
+          scrollProgress = self.progress;
+          updateCaptions(scrollProgress);
+        }
+      });
+    } else {
+      updateCaptions(scrollProgress);
+    }
+
+    // 11. Render Loop & Animation Physics
+    const clock = new THREE.Clock();
 
     function animate() {
       requestAnimationFrame(animate);
-      if (!isVisible) return;
 
+      const dt = clock.getDelta();
       const elapsedTime = clock.getElapsedTime();
 
-      // (A) Smooth Lerp Tilt for Whole Scene
-      mainGroup.rotation.y += (targetRotationY - mainGroup.rotation.y) * config.lerpDamping;
-      mainGroup.rotation.x += (targetRotationX - mainGroup.rotation.x) * config.lerpDamping;
+      // Velocity calculation
+      scrollVelocity = (scrollProgress - prevScrollProgress) / Math.max(0.001, dt);
+      prevScrollProgress = scrollProgress;
 
-      // Camera gentle parallax
-      camera.position.x += (mouseX * 0.45 - camera.position.x) * 0.04;
-      camera.position.y += (mouseY * 0.35 - camera.position.y) * 0.04;
-      camera.lookAt(0, 0, 0);
+      // Smooth pointer lerp (6% per frame)
+      smoothPointer.x += (pointer.x - smoothPointer.x) * 0.06;
+      smoothPointer.y += (pointer.y - smoothPointer.y) * 0.06;
 
-      // (B) Rotate Background Logo Swoosh Ring
-      swooshRing.rotation.z += config.rotationSpeedRing;
-      innerSwoosh.rotation.z -= config.rotationSpeedRing * 1.3;
+      // Mouse world position on z = 0 plane for particle repulsion
+      mouseWorldPos.set(smoothPointer.x * 4.5, smoothPointer.y * 3.5, 0);
 
-      // (C) Gentle Organic Bobbing of Floating Products
-      chiaOil.position.y = -0.2 + Math.sin(elapsedTime * 1.4) * 0.08;
-      chiaOil.rotation.y += 0.004;
+      // (A) Hero Chia Oil Bottle Motion
+      // Idle bob ±0.04 over 5 seconds
+      const bobY = Math.sin(elapsedTime * (Math.PI * 2 / 5.0)) * 0.04;
+      heroBottleGroup.position.y = bobY;
 
-      chiaYoghurt.position.y = 0.3 + Math.cos(elapsedTime * 1.2) * 0.1;
-      chiaYoghurt.rotation.y -= 0.003;
+      // Bottle moves opposite to cursor at +pointer * 0.05
+      heroBottleGroup.position.x = smoothPointer.x * 0.05;
 
-      yaconKefir.position.y = 1.2 + Math.sin(elapsedTime * 1.1 + 1.5) * 0.09;
-      yaconKefir.rotation.y += 0.0035;
+      // Bottle tilts up to ±0.22 rad toward cursor
+      heroBottleGroup.rotation.y = smoothPointer.x * 0.22;
+      heroBottleGroup.rotation.x = -smoothPointer.y * 0.16;
 
-      hibiscusBox.position.y = -0.4 + Math.cos(elapsedTime * 1.3 + 2.0) * 0.08;
-      hibiscusBox.rotation.y += 0.003;
+      // Specular sheen follows cursor across glass
+      sheenMesh.position.x = smoothPointer.x * 0.12;
+      sheenMesh.position.y = smoothPointer.y * 0.12;
 
-      // (D) Animate Drifting Ingredients with sinusoidal motion
+      // (B) Concentric Rings Animation
+      // Rings rotate progress * 2PI + slow idle spin
+      ring1.rotation.z = scrollProgress * Math.PI * 2 + elapsedTime * 0.15;
+      ring2.rotation.z = -(scrollProgress * Math.PI * 2) - elapsedTime * 0.12;
+
+      // Yacon range (60-85%): rings glow brighter
+      if (scrollProgress >= 0.60 && scrollProgress <= 0.85) {
+        const glowBoost = Math.sin(((scrollProgress - 0.60) / 0.25) * Math.PI);
+        ring1Mat.emissiveIntensity = 0.15 + glowBoost * 0.45;
+        ring2Mat.emissiveIntensity = 0.12 + glowBoost * 0.40;
+      } else {
+        ring1Mat.emissiveIntensity = 0.15;
+        ring2Mat.emissiveIntensity = 0.12;
+      }
+
+      // (C) Camera Dolly Back (85-100%: z 7 -> 7.8)
+      if (scrollProgress > 0.85) {
+        const dollyP = (scrollProgress - 0.85) / 0.15;
+        camera.position.z = 7.0 + dollyP * 0.8;
+      } else {
+        camera.position.z = 7.0;
+      }
+
+      // (D) Animate 10 Product Cut-out Planes
+      productPlanes.forEach((prod) => {
+        const cfg = prod.config;
+        const grp = prod.group;
+        const mesh = prod.mesh;
+
+        // Calculate pop local progress
+        let t = 0;
+        if (isReducedMotion) {
+          t = 1.0;
+        } else {
+          t = Math.max(0, Math.min(1, (scrollProgress - cfg.popStart) / (cfg.popEnd - cfg.popStart)));
+        }
+
+        // Trigger burst on forward pass
+        if (t > 0 && !prod.hasBurst) {
+          prod.hasBurst = true;
+          emitPopBurst(new THREE.Vector3(cfg.x, cfg.y, cfg.z));
+        } else if (t === 0 && prod.hasBurst) {
+          prod.hasBurst = false;
+        }
+
+        const easeVal = easeOutBack(t, 1.9);
+        const currentScale = isReducedMotion ? 1.0 : Math.max(0, easeVal);
+
+        // Position: start at (x*0.15, y*0.15, z-0.6), end at layout pos with arc
+        const startX = cfg.x * 0.15;
+        const startY = cfg.y * 0.15;
+        const startZ = cfg.z - 0.6;
+        const arcY = Math.sin(t * Math.PI) * 0.35;
+
+        const posX = startX + (cfg.x - startX) * t;
+        const posY = startY + (cfg.y - startY) * t + arcY;
+        const posZ = startZ + (cfg.z - startZ) * t;
+
+        // Layer Parallax offset: -pointer * (0.10 + 0.07 * |z|)
+        const parallaxFactor = 0.10 + 0.07 * Math.abs(cfg.z);
+        const targetParallaxX = -smoothPointer.x * parallaxFactor;
+        const targetParallaxY = -smoothPointer.y * parallaxFactor;
+        prod.currentParallax.x += (targetParallaxX - prod.currentParallax.x) * 0.06;
+        prod.currentParallax.y += (targetParallaxY - prod.currentParallax.y) * 0.06;
+
+        // Tilt: rotY = pointer.x * 0.25 * depthFactor, rotX = -pointer.y * 0.18 * depthFactor
+        const depthFactor = 1.0 - Math.abs(cfg.z) / 4.0;
+        const tiltY = smoothPointer.x * 0.25 * depthFactor;
+        const tiltX = -smoothPointer.y * 0.18 * depthFactor;
+
+        // Idle life float ±0.03 on own phase offset
+        const idleFloat = Math.sin(elapsedTime * 1.5 + (cfg.rotZ || 0)) * 0.03;
+
+        // Hover effect: z += 0.8, scale * 1.12
+        const isHovered = mesh.userData.isHovered;
+        const hoverZOffset = isHovered ? 0.8 : 0.0;
+        const hoverScaleMult = isHovered ? 1.12 : 1.0;
+
+        grp.position.set(
+          posX + prod.currentParallax.x,
+          posY + prod.currentParallax.y + idleFloat,
+          posZ + hoverZOffset
+        );
+
+        const targetRotRad = (cfg.rotZ * Math.PI) / 180;
+        const startRotRad = (cfg.rotZ + (cfg.rotZ >= 0 ? 25 : -25)) * (Math.PI / 180);
+        grp.rotation.z = startRotRad + (targetRotRad - startRotRad) * t;
+        grp.rotation.y = tiltY;
+        grp.rotation.x = tiltX;
+
+        grp.scale.set(
+          currentScale * hoverScaleMult,
+          currentScale * hoverScaleMult,
+          currentScale * hoverScaleMult
+        );
+
+        // Opacity
+        prod.material.opacity = Math.min(cfg.z < -2 ? 0.94 : 1.0, t * 1.4);
+
+        // Hover brightness dimming
+        if (hoveredMesh && !isHovered) {
+          prod.material.color.setScalar(0.8);
+        } else {
+          prod.material.color.setScalar(1.0);
+        }
+
+        // Halo brighten
+        prod.halo.material.opacity = isHovered ? 0.65 : 0.25;
+      });
+
+      // (E) Raycasting for Hover Interaction
+      raycaster.setFromCamera(mouseCoord, camera);
+      const intersects = raycaster.intersectObjects(interactiveMeshes);
+
+      if (intersects.length > 0) {
+        const topMesh = intersects[0].object;
+        if (hoveredMesh !== topMesh) {
+          if (hoveredMesh) hoveredMesh.userData.isHovered = false;
+          hoveredMesh = topMesh;
+          hoveredMesh.userData.isHovered = true;
+
+          // Populate and show tooltip
+          const meta = hoveredMesh.userData.meta;
+          if (meta && tooltipEl) {
+            tooltipEl.innerHTML = `
+              <div class="tooltip-title">${meta.name}</div>
+              <div class="tooltip-sizes">Available in: ${meta.sizes}</div>
+              ${meta.note ? `<div class="tooltip-note">${meta.note}</div>` : ''}
+              <p class="tooltip-use">Suggested use: ${meta.use}</p>
+            `;
+            tooltipEl.classList.add('visible');
+          }
+        }
+      } else {
+        if (hoveredMesh) {
+          hoveredMesh.userData.isHovered = false;
+          hoveredMesh = null;
+        }
+        if (tooltipEl) {
+          tooltipEl.classList.remove('visible');
+        }
+      }
+
+      // (F) Animate Drifting Particles & Cursor Repulsion
+      const stretchY = 1.0 + Math.min(1.2, Math.abs(scrollVelocity) * 0.4);
       for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.mesh.position.y = p.initialY + Math.sin(elapsedTime * 1.5 + i) * (p.rangeY * 0.15);
-        if (p.rotSpeed.x) p.mesh.rotation.x += p.rotSpeed.x;
-        if (p.rotSpeed.y) p.mesh.rotation.y += p.rotSpeed.y;
-        if (p.rotSpeed.z) p.mesh.rotation.z += p.rotSpeed.z;
+        const pt = particles[i];
+        const m = pt.mesh;
+
+        // Idle float
+        const floatY = Math.sin(elapsedTime * 1.6 + pt.phase) * 0.35;
+        let targetX = pt.basePos.x;
+        let targetY = pt.basePos.y + floatY;
+
+        // Repel from cursor within 1.4 units
+        const dx = targetX - mouseWorldPos.x;
+        const dy = targetY - mouseWorldPos.y;
+        const distSq = dx * dx + dy * dy;
+        const repelRadius = 1.4;
+
+        if (distSq < repelRadius * repelRadius && distSq > 0.001) {
+          const dist = Math.sqrt(distSq);
+          const force = (repelRadius - dist) / repelRadius;
+          targetX += (dx / dist) * force * 0.7;
+          targetY += (dy / dist) * force * 0.7;
+        }
+
+        m.position.x += (targetX - m.position.x) * 0.08;
+        m.position.y += (targetY - m.position.y) * 0.08;
+
+        // Stretch along scroll direction
+        m.scale.y = stretchY * (pt.isPetal ? 0.7 : 1.45);
+
+        // Rotation
+        if (pt.rotSpeed.x) m.rotation.x += pt.rotSpeed.x;
+        if (pt.rotSpeed.y) m.rotation.y += pt.rotSpeed.y;
+        if (pt.rotSpeed.z) m.rotation.z += pt.rotSpeed.z;
+      }
+
+      // (G) Animate Active Bursts
+      const now = performance.now();
+      for (let b = activeBursts.length - 1; b >= 0; b--) {
+        const burst = activeBursts[b];
+        const elapsed = now - burst.startTime;
+        const progress = elapsed / burst.duration;
+
+        if (progress >= 1.0) {
+          burstGroup.remove(burst.group);
+          activeBursts.splice(b, 1);
+        } else {
+          // Radiate items
+          burst.items.forEach(item => {
+            item.mesh.position.x += item.vx * dt;
+            item.mesh.position.y += item.vy * dt;
+            item.mesh.position.z += item.vz * dt;
+            item.mesh.scale.multiplyScalar(0.98);
+          });
+          // Ripple expands 0.2 -> 1.6
+          const ripScale = 0.2 + progress * 1.4;
+          burst.ripple.scale.set(ripScale, ripScale, 1);
+          burst.ripple.material.opacity = (1 - progress) * 0.7;
+        }
       }
 
       renderer.render(scene, camera);
     }
 
     animate();
+
+    // 12. Resize Listener
+    window.addEventListener('resize', () => {
+      if (!container) return;
+      width = container.clientWidth || window.innerWidth;
+      height = container.clientHeight || window.innerHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    });
   }
 
-  // Lazy-load after first paint
+  // Initialize
   if (document.readyState === 'complete') {
-    setTimeout(initHeroScene, config.lazyLoadDelayMs);
+    setTimeout(initHeroScene, 100);
   } else {
     window.addEventListener('load', () => {
-      setTimeout(initHeroScene, config.lazyLoadDelayMs);
+      setTimeout(initHeroScene, 100);
     });
   }
 })();

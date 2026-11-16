@@ -44,7 +44,7 @@
   <link rel="stylesheet" href="assets/css/variables.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/3d-motion.css">
+  <link rel="stylesheet" href="assets/css/3d-motion.css?v=4">
   <link rel="stylesheet" href="assets/css/pages.css">
 </head>
 <body>
@@ -123,59 +123,66 @@
 
   <main id="main-content">
     <!-- ====================================================================
-         HERO SECTION: 3D THREE.JS PRODUCT STAGE (Rule 7, 9, 10, 11, 13)
+         HERO SECTION: PINNED 600VH PRODUCT POP-UP SCENE (Rule 6, 7, 8, 9, 10, 16, 18)
          ==================================================================== -->
-    <section class="hero-section" aria-label="Afyalishe Wellness Home">
-      <div class="container">
-        <div class="hero-grid">
-          <!-- Left: Concrete Headline & Dominant CTA -->
-          <div class="hero-content">
-            <span class="brand-tagline" style="font-size: 17px; margin-bottom: 8px;">Food as medicine</span>
-            <!-- Rule 9: Specific, outcome-driven headline; Rule 16: text-wrap balance -->
-            <h1 class="hero-headline">
-              Cold-pressed chia oil, living kefir, and whole hibiscus teas grown in Nyeri.
-            </h1>
+    <section class="hero-scroll-container" id="hero-scroll-container" aria-label="Afyalishe Wellness Home">
+      <!-- Hidden screen-reader accessible product directory -->
+      <div class="sr-only">
+        <h2>Afyalishe Wellness Products Catalogue</h2>
+        <ul>
+          <li>Chia Oil - 100 ml · 60 ml · 30 ml (consume one tablespoon daily)</li>
+          <li>Chia Seeds - 100 g · 200 g · 500 g (soak overnight in water and drink)</li>
+          <li>Chia Uji - 1 kg · 500 g (cook and consume like regular porridge)</li>
+          <li>Chia Yoghurt - 250 ml · 500 ml · 1 L to 5 L (smoothies, mix with muesli or granola)</li>
+          <li>Hibiscus Herbal Blend - 50 g (25 teabags)</li>
+          <li>Hibiscus Dried Flowers - 100 g (as a herbal tea or infused in drinking water)</li>
+          <li>Hibiscus Powder - 200 g · 100 g (add to ready food or face masque)</li>
+          <li>Yacon Probiotic Immune Boost - 250 ml · 500 ml (drink directly or mix with smoothies)</li>
+          <li>Yacon Probiotic Syrup Kefir - 500 ml · 1 L (drink directly or mix with smoothies)</li>
+          <li>Yacon Inulin Capsules - 40 capsule pack (take two capsules daily)</li>
+          <li>Granola - 400 g · 200 g · 100 g (snack directly or add yoghurt)</li>
+        </ul>
+      </div>
 
-            <p class="hero-lead">
-              Natural functional foods formulated without artificial preservatives, synthetic dyes, or refined sugars. Nourish your digestive vitality directly from Mount Kenya smallholder farms.
-            </p>
+      <div class="hero-sticky-stage">
+        <!-- Fullscreen WebGL Stage -->
+        <div class="hero-3d-fullscreen-stage" id="hero-3d-scene-container"></div>
 
-            <!-- Rule 10: Dominant Primary CTA -->
-            <div class="hero-ctas">
-              <a href="shop.html" class="btn btn-primary btn-lg" data-magnetic="true">
-                <span>Shop All 11 Products</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </a>
-              <a href="where-to-buy.html" class="btn btn-secondary btn-lg" data-magnetic="true">
-                <span>Find Near You (24 Outlets)</span>
-              </a>
+        <!-- UI Overlay (Outer 30% of viewport, leaving central 26% clear) -->
+        <div class="hero-ui-overlay">
+          <!-- Dynamic Caption Block (Bottom-Left) -->
+          <div class="hero-caption-block" id="hero-caption-block" data-current-section="hero">
+            <span class="hero-caption-tagline">"Food as medicine"</span>
+            <h2 class="hero-caption-title">Chia Oil Superfood Elixir</h2>
+            <p class="hero-caption-body">We're all about natural innovative food products that promote vitality and wellbeing. All our products are free from artificial additives.</p>
+            <div style="font-size: 13px; color: var(--color-primary); font-weight: 600;">Scroll to unpack the harvest &darr;</div>
+          </div>
+
+          <!-- Thin 4-Tick Progress Rail (Bottom-Center) -->
+          <div class="hero-progress-rail" id="hero-progress-rail" aria-label="Scene progress">
+            <div class="hero-rail-ticks">
+              <span class="hero-rail-tick active" data-group="chia">Chia</span>
+              <span class="hero-rail-tick" data-group="hibiscus">Hibiscus</span>
+              <span class="hero-rail-tick" data-group="yacon">Yacon</span>
+              <span class="hero-rail-tick" data-group="granola">Granola</span>
             </div>
-
-            <!-- Grouped stats with spacing (Rule 8, 18: Tabular numbers) -->
-            <div style="display: flex; gap: 32px; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--color-border);">
-              <div>
-                <strong class="stat-counter" style="font-family: var(--font-heading); font-size: 20px; color: var(--color-primary); display: block;">100%</strong>
-                <span style="font-size: 13px; color: var(--color-text-secondary);">Additive-Free</span>
-              </div>
-              <div>
-                <strong class="stat-counter" style="font-family: var(--font-heading); font-size: 20px; color: var(--color-primary); display: block;">11 Towns</strong>
-                <span style="font-size: 13px; color: var(--color-text-secondary);">Stockists & Company Shops</span>
-              </div>
-              <div>
-                <strong class="stat-counter" style="font-family: var(--font-heading); font-size: 20px; color: var(--color-primary); display: block;">KES 250+</strong>
-                <span style="font-size: 13px; color: var(--color-text-secondary);">Doorstep Delivery</span>
-              </div>
+            <div class="hero-rail-track">
+              <div class="hero-rail-bar" id="hero-rail-bar"></div>
             </div>
           </div>
 
-          <!-- Right: Dominant 3D Interactive Stage (Rule 6, 7) -->
-          <div class="hero-3d-stage" id="hero-3d-scene-container" title="Drag to rotate products; move cursor to tilt scene">
-            <div class="hero-fallback-img">
-              <img src="assets/products/chia-oil.png" alt="Afyalishe Chia Oil cold-pressed bottle">
-            </div>
+          <!-- Finale CTAs (Bottom-Right, Appears at 85-100%) -->
+          <div class="hero-finale-ctas" id="hero-finale-ctas">
+            <a href="shop.html" class="btn btn-primary btn-lg" data-magnetic="true">
+              <span>Explore Catalogue</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="https://wa.me/254759561657" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp-action btn-lg" data-magnetic="true">
+              <span>Order on WhatsApp</span>
+            </a>
           </div>
         </div>
       </div>
@@ -490,7 +497,7 @@
   <script src="assets/js/custom-cursor.js"></script>
   <script src="assets/js/magnetic-btn.js"></script>
   <script src="assets/js/tilt-card.js"></script>
-  <script src="assets/js/hero-scene.js"></script>
+  <script src="assets/js/hero-scene.js?v=4"></script>
   <script src="assets/js/scroll-showcase.js"></script>
   <script src="assets/js/product-viewer-3d.js"></script>
   <script src="assets/js/store.js?v=3"></script>
