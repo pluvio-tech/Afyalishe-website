@@ -316,7 +316,7 @@ window.AFYALISHE_APP = {
             <span class="category-label">${p.categoryName}</span>
             ${allergenTag}
           </div>
-          <img src="${p.image}" alt="${p.name}" loading="lazy">
+          <img src="${p.image}?v=3" alt="${p.name}" loading="lazy">
         </div>
 
         <div class="product-card-body">
@@ -413,7 +413,7 @@ window.AFYALISHE_APP = {
         <div class="product-stage">
           <!-- Left: Dominant Interactive 3D/Zoom Viewport (Rule 6, 7) -->
           <div class="product-viewer-box">
-            <img src="${product.image}" alt="${product.name}" class="product-3d-target-img">
+            <img src="${product.image}?v=3" alt="${product.name}" class="product-3d-target-img">
             <div class="viewer-hint">
               <span>Interactive 3D: drag to rotate &bull; hover to zoom</span>
             </div>
