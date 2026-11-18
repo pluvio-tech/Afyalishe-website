@@ -24,7 +24,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--color-bg-page);
   color: var(--color-text-primary);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {

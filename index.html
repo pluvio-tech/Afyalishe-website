@@ -46,6 +46,7 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/3d-motion.css?v=4">
   <link rel="stylesheet" href="assets/css/pages.css">
+  <link rel="stylesheet" href="assets/css/orbit-carousel.css?v=5">
 </head>
 <body>
 
@@ -123,66 +124,57 @@
 
   <main id="main-content">
     <!-- ====================================================================
-         HERO SECTION: PINNED 600VH PRODUCT POP-UP SCENE (Rule 6, 7, 8, 9, 10, 16, 18)
+         HERO SECTION: DRAG-TO-ORBIT WHEEL SHOWCASE (Rule 5, 6, 7, 8, 9, 10, 14, 18, 20)
          ==================================================================== -->
-    <section class="hero-scroll-container" id="hero-scroll-container" aria-label="Afyalishe Wellness Home">
-      <!-- Hidden screen-reader accessible product directory -->
-      <div class="sr-only">
-        <h2>Afyalishe Wellness Products Catalogue</h2>
-        <ul>
-          <li>Chia Oil - 100 ml · 60 ml · 30 ml (consume one tablespoon daily)</li>
-          <li>Chia Seeds - 100 g · 200 g · 500 g (soak overnight in water and drink)</li>
-          <li>Chia Uji - 1 kg · 500 g (cook and consume like regular porridge)</li>
-          <li>Chia Yoghurt - 250 ml · 500 ml · 1 L to 5 L (smoothies, mix with muesli or granola)</li>
-          <li>Hibiscus Herbal Blend - 50 g (25 teabags)</li>
-          <li>Hibiscus Dried Flowers - 100 g (as a herbal tea or infused in drinking water)</li>
-          <li>Hibiscus Powder - 200 g · 100 g (add to ready food or face masque)</li>
-          <li>Yacon Probiotic Immune Boost - 250 ml · 500 ml (drink directly or mix with smoothies)</li>
-          <li>Yacon Probiotic Syrup Kefir - 500 ml · 1 L (drink directly or mix with smoothies)</li>
-          <li>Yacon Inulin Capsules - 40 capsule pack (take two capsules daily)</li>
-          <li>Granola - 400 g · 200 g · 100 g (snack directly or add yoghurt)</li>
-        </ul>
-      </div>
-
-      <div class="hero-sticky-stage">
-        <!-- Fullscreen WebGL Stage -->
-        <div class="hero-3d-fullscreen-stage" id="hero-3d-scene-container"></div>
-
-        <!-- UI Overlay (Outer 30% of viewport, leaving central 26% clear) -->
-        <div class="hero-ui-overlay">
-          <!-- Dynamic Caption Block (Bottom-Left) -->
-          <div class="hero-caption-block" id="hero-caption-block" data-current-section="hero">
-            <span class="hero-caption-tagline">"Food as medicine"</span>
-            <h2 class="hero-caption-title">Chia Oil Superfood Elixir</h2>
-            <p class="hero-caption-body">We're all about natural innovative food products that promote vitality and wellbeing. All our products are free from artificial additives.</p>
-            <div style="font-size: 13px; color: var(--color-primary); font-weight: 600;">Scroll to unpack the harvest &darr;</div>
-          </div>
-
-          <!-- Thin 4-Tick Progress Rail (Bottom-Center) -->
-          <div class="hero-progress-rail" id="hero-progress-rail" aria-label="Scene progress">
-            <div class="hero-rail-ticks">
-              <span class="hero-rail-tick active" data-group="chia">Chia</span>
-              <span class="hero-rail-tick" data-group="hibiscus">Hibiscus</span>
-              <span class="hero-rail-tick" data-group="yacon">Yacon</span>
-              <span class="hero-rail-tick" data-group="granola">Granola</span>
+    <section class="orbit-hero-section" aria-label="Afyalishe Wellness Orbit Showcase">
+      <div class="container">
+        <div class="orbit-hero-grid">
+          <!-- Left: Headline & Live Active Product Spotlight -->
+          <div class="orbit-hero-content">
+            <span class="orbit-hero-tagline">"Food as medicine"</span>
+            <h1 class="orbit-hero-headline">Mount Kenya Cold-Pressed Chia, Living Probiotics &amp; Heritage Botanicals</h1>
+            <p class="orbit-hero-lead">Natural functional foods formulated without artificial preservatives, synthetic dyes, or refined sugars. Direct from Mount Kenya smallholder farms.</p>
+            
+            <!-- Active Spotlight Card -->
+            <div class="orbit-spotlight-card">
+              <div class="orbit-spotlight-header">
+                <span class="orbit-spotlight-badge" id="orbit-spotlight-category">Cold-Pressed Superfoods</span>
+                <span class="orbit-spotlight-live-tag">Active in Orbit</span>
+              </div>
+              <h3 class="orbit-spotlight-title" id="orbit-spotlight-title">Chia Oil</h3>
+              <p class="orbit-spotlight-desc" id="orbit-spotlight-desc">Cold-pressed virgin extraction with over 60% heart-healthy ALA Omega-3.</p>
+              <p class="orbit-spotlight-use" id="orbit-spotlight-use"><em>Suggested use:</em> Consume one tablespoon daily</p>
+              <div class="orbit-spotlight-sizes" id="orbit-spotlight-sizes"></div>
+              <div class="orbit-spotlight-actions">
+                <a href="product.html?id=chia-oil" class="btn btn-primary" id="orbit-spotlight-view">View Details</a>
+                <a href="https://wa.me/254759561657" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp-action" id="orbit-spotlight-whatsapp">Order on WhatsApp</a>
+              </div>
             </div>
-            <div class="hero-rail-track">
-              <div class="hero-rail-bar" id="hero-rail-bar"></div>
+            
+            <div class="orbit-drag-cue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9l6 6-6 6"/><path d="M4 4v7a4 4 0 0 0 4 4h11"/></svg>
+              <span>Drag the orbit wheel to spin 360&deg; &bull; Click any card to focus</span>
             </div>
           </div>
 
-          <!-- Finale CTAs (Bottom-Right, Appears at 85-100%) -->
-          <div class="hero-finale-ctas" id="hero-finale-ctas">
-            <a href="shop.html" class="btn btn-primary btn-lg" data-magnetic="true">
-              <span>Explore Catalogue</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 18px; height: 18px;">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
+          <!-- Right: The Orbit Wheel Stage -->
+          <div class="orbit-wheel-stage" id="orbit-wheel-stage" title="Drag to orbit products" tabindex="0">
+            <div class="orbit-track-ring">
+              <svg viewBox="0 0 720 220" style="width: 100%; height: 100%; overflow: visible;">
+                <ellipse cx="360" cy="110" rx="355" ry="100" fill="none" stroke="rgba(122, 193, 67, 0.35)" stroke-width="2.5" stroke-dasharray="8 6"/>
+                <ellipse cx="360" cy="110" rx="275" ry="75" fill="none" stroke="rgba(88, 144, 56, 0.20)" stroke-width="1.5" class="orbit-track-ring-inner"/>
               </svg>
-            </a>
-            <a href="https://wa.me/254759561657" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp-action btn-lg" data-magnetic="true">
-              <span>Order on WhatsApp</span>
-            </a>
+            </div>
+            
+            <!-- Prev/Next Controls -->
+            <button class="orbit-nav-arrow orbit-nav-prev" id="orbit-prev-btn" aria-label="Previous product">&larr;</button>
+            <button class="orbit-nav-arrow orbit-nav-next" id="orbit-next-btn" aria-label="Next product">&rarr;</button>
+
+            <!-- Cards Container -->
+            <div class="orbit-wheel-track" id="orbit-wheel-track"></div>
+
+            <!-- 11 Dot Indicators -->
+            <div class="orbit-dots-bar" id="orbit-dots-container"></div>
           </div>
         </div>
       </div>
@@ -245,61 +237,7 @@
       </div>
     </section>
 
-    <!-- ====================================================================
-         SCROLL-DRIVEN 360° SHOWCASE: CHIA OIL (Rule 6, 7, 9)
-         ==================================================================== -->
-    <section class="showcase-section" aria-label="Chia Oil 360 Product Inspection">
-      <div class="container">
-        <div class="showcase-grid">
-          <!-- 360 Rotating Object Stage -->
-          <div class="showcase-stage">
-            <div class="showcase-bottle-wrapper">
-              <img src="assets/products/chia-oil.png" alt="Afyalishe Chia Oil cold-pressed bottle">
-            </div>
-          </div>
 
-          <!-- Specific Outcomes -->
-          <div>
-            <span class="brand-tagline" style="font-size: 16px; display: block; margin-bottom: 6px;">Cold-Pressed Extraction</span>
-            <h2 style="margin-bottom: 12px;">Virgin Chia Seed Oil (60%+ ALA Omega-3)</h2>
-            <p style="color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 24px;">
-              Hydraulically cold-pressed in small batches in Nyeri without heat or chemicals. Preserves delicate polyunsaturated fatty acids that support cardiovascular elasticity and radiant skin.
-            </p>
-
-            <div class="showcase-points">
-              <div class="showcase-point">
-                <span class="showcase-point-num">01</span>
-                <div>
-                  <h4 style="margin-bottom: 2px;">Alpha-Linolenic Acid</h4>
-                  <p style="font-size: 13.5px; margin-bottom: 0;">Highest plant source of omega-3 to nourish cellular membranes and soothe systemic inflammation.</p>
-                </div>
-              </div>
-
-              <div class="showcase-point">
-                <span class="showcase-point-num">02</span>
-                <div>
-                  <h4 style="margin-bottom: 2px;">Daily Spoonful Ritual</h4>
-                  <p style="font-size: 13.5px; margin-bottom: 0;">Consume one tablespoon daily straight, whisked into salad dressings, or drizzled over warm Chia Uji.</p>
-                </div>
-              </div>
-
-              <div class="showcase-point">
-                <span class="showcase-point-num">03</span>
-                <div>
-                  <h4 style="margin-bottom: 2px;">Available in 30ml, 60ml &amp; 100ml</h4>
-                  <p style="font-size: 13.5px; margin-bottom: 0;">Dark amber glass dropper bottles protect active antioxidants from light degradation.</p>
-                </div>
-              </div>
-            </div>
-
-            <div style="margin-top: 24px; display: flex; gap: 14px; flex-wrap: wrap;">
-              <a href="product.html?id=chia-oil" class="btn btn-primary">Order Chia Oil</a>
-              <a href="https://wa.me/254759561657?text=Hello%2C%20I%20would%20like%20to%20order%20Afyalishe%20Chia%20Oil." target="_blank" class="btn btn-secondary" rel="noopener noreferrer">WhatsApp Inquiry</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- ====================================================================
          DR. MONICA VIDEO & FUNCTIONAL NUTRITION (Rule 6, 9)
@@ -501,8 +439,12 @@
   <script src="assets/js/scroll-showcase.js"></script>
   <script src="assets/js/product-viewer-3d.js"></script>
   <script src="assets/js/store.js?v=3"></script>
+  <script src="assets/js/orbit-carousel.js?v=5"></script>
   <script src="assets/js/checkout.js?v=2"></script>
   <script src="assets/js/ui.js"></script>
   <script src="assets/js/main.js?v=3"></script>
+  <script src="assets/vendor/RGBELoader.js"></script>
+  <script src="assets/vendor/GLTFLoader.js"></script>
+  <script src="assets/vendor/lenis.min.js"></script>
 </body>
 </html>
